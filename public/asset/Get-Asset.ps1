@@ -1,4 +1,4 @@
-Function Get-UserPermissions {
+Function Get-Asset {
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low'
@@ -13,21 +13,31 @@ Function Get-UserPermissions {
         $Org,
 
         [Parameter(Mandatory = $true)]
-        [string]
-        $UserID,
-
-        [Parameter(Mandatory = $true)]
         [PSCredential]
         $Credential,
+
+        [Parameter()]
+        [int]
+        $AssetID,
+
+        [Parameter()]
+        [switch]
+        $AsBarcodes,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
-
     )
     Begin {
-        $Endpoint = "/ams/shared/api/accounts/"
+        $Endpoint = '/api/asset/assets/'
+        If ($AssetID) {
+            $Endpoint = "/api/asset/assets/$AssetID/"
+            If ($AsBarcodes) {
+                $Endpoint = "/api/asset/assets/$AssetID/barcodes"
+            }
+        }
+        $Endpoint
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server)) {

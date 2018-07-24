@@ -1,4 +1,4 @@
-Function Get-UserPermissions {
+Function Get-StartupProgramInventory {
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low'
@@ -13,21 +13,23 @@ Function Get-UserPermissions {
         $Org,
 
         [Parameter(Mandatory = $true)]
-        [string]
-        $UserID,
-
-        [Parameter(Mandatory = $true)]
         [PSCredential]
         $Credential,
+
+        [Parameter()]
+        [string]
+        $ProgramID,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
-
     )
     Begin {
-        $Endpoint = "/ams/shared/api/accounts/"
+        $Endpoint = '/api/inventory/startup_programs/'
+        If ($ProgramID) {
+            $Endpoint = "/api/inventory/startup_programs/$ProgramID/"
+        }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server)) {

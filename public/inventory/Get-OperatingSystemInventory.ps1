@@ -1,30 +1,40 @@
 Function Get-OperatingSystemInventory {
+    [cmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'low'
+    )]
     param(
-    [Parameter(Mandatory = $true)]
-    [string]
-    $Server,
+        [Parameter(Mandatory = $true)]
+        [string]
+        $Server,
 
-    [Parameter(Mandatory = $true)]
-    [string]
-    $Org,
+        [Parameter(Mandatory = $true)]
+        [string]
+        $Org,
 
-    [Parameter(Mandatory = $true)]
-    [PSCredential]
-    $Credential,
+        [Parameter(Mandatory = $true)]
+        [PSCredential]
+        $Credential,
 
-    [Parameter()]
-    [string]
-    $MachineID,
+        [Parameter()]
+        [string]
+        $MachineID,
 
-    [Parameter()]
-    [string]
-    $QueryParameters
+        [Parameter()]
+        [ValidatePattern("^\?")]
+        [string]
+        $QueryParameters
     )
-
-    $Endpoint = '/api/inventory/operating_systems/'
-    If ($MachineID) {
-        $Endpoint = "/api/inventory/operating_systems/$MachineID/"
+    Begin {
+        $Endpoint = '/api/inventory/operating_systems/'
+        If ($MachineID) {
+            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
+        }
     }
-
-    New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+    Process {
+        If ($PSCmdlet.ShouldProcess($Server)) {
+            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+        }
+    }
+    End {}
 }
