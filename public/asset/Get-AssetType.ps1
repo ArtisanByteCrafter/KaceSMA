@@ -1,4 +1,4 @@
-Function Get-UserPermissions {
+Function Get-AssetType {
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low'
@@ -13,10 +13,6 @@ Function Get-UserPermissions {
         $Org,
 
         [Parameter(Mandatory = $true)]
-        [string]
-        $UserID,
-
-        [Parameter(Mandatory = $true)]
         [PSCredential]
         $Credential,
 
@@ -24,10 +20,9 @@ Function Get-UserPermissions {
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
-
     )
     Begin {
-        $Endpoint = "/ams/shared/api/accounts/"
+        $Endpoint = '/api/asset/assets/types'
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server)) {

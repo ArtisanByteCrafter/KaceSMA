@@ -1,4 +1,4 @@
-Function Get-UserPermissions {
+Function Get-BarcodeAsset {
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low'
@@ -13,21 +13,23 @@ Function Get-UserPermissions {
         $Org,
 
         [Parameter(Mandatory = $true)]
-        [string]
-        $UserID,
-
-        [Parameter(Mandatory = $true)]
         [PSCredential]
         $Credential,
+
+        [Parameter()]
+        [int]
+        $BarcodeID,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
-
     )
     Begin {
-        $Endpoint = "/ams/shared/api/accounts/"
+        $Endpoint = '/api/asset/barcodes'
+        If ($BarcodeID) {
+            $Endpoint = "/api/asset/barcodes/$BarcodeID/"
+        }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server)) {
