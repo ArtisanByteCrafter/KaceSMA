@@ -1,30 +1,41 @@
 Function Get-SoftwareInventory {
+    [cmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'low'
+    )]
     param(
-    [Parameter(Mandatory = $true)]
-    [string]
-    $Server,
+        [Parameter(Mandatory = $true)]
+        [string]
+        $Server,
 
-    [Parameter(Mandatory = $true)]
-    [string]
-    $Org,
+        [Parameter(Mandatory = $true)]
+        [string]
+        $Org,
 
-    [Parameter(Mandatory = $true)]
-    [PSCredential]
-    $Credential,
+        [Parameter(Mandatory = $true)]
+        [PSCredential]
+        $Credential,
 
-    [Parameter()]
-    [string]
-    $SoftwareID,
+        [Parameter()]
+        [string]
+        $SoftwareID,
 
-    [Parameter()]
-    [string]
-    $QueryParameters
+        [Parameter()]
+        [ValidatePattern("^\?")]
+        [string]
+        $QueryParameters
     )
 
-    $Endpoint = '/api/inventory/softwares/'
-    If ($SoftwareID) {
-        $Endpoint = "/api/inventory/softwares/$SoftwareID/"
+    Begin {
+        $Endpoint = '/api/inventory/softwares/'
+        If ($SoftwareID) {
+            $Endpoint = "/api/inventory/softwares/$SoftwareID/"
+        }
     }
-
-    New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+    Process {
+        If ($PSCmdlet.ShouldProcess($Server)) {
+            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+        }
+    }
+    End {}
 }

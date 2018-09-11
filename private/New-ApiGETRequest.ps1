@@ -1,18 +1,18 @@
 Function New-ApiGETRequest {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]
         $Server,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]
         $Org,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]
         $Endpoint,
 
-        [Parameter(Mandatory=$True)]
+        [Parameter(Mandatory = $True)]
         [PSCredential]
         $Credential,
 
@@ -38,10 +38,10 @@ Function New-ApiGETRequest {
     $Request = Invoke-WebRequest -Uri $Uri -Headers $headers -Body $Body -Method POST -WebSession $session -UseBasicParsing
     $CSRFToken = $request.Headers.'x-dell-csrf-token'
     $headers.Add("x-dell-csrf-token", "$CSRFToken")
-    $APIUrl = ("$Server"+"$Endpoint")
-    
+    $APIUrl = ("$Server" + "$Endpoint")
+
     If ($QueryParameters) {
-        $APIUrl = $APIUrl+$QueryParameters
+        $APIUrl = $APIUrl + $QueryParameters
     }
     Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method GET -WebSession $session -UseBasicParsing
 }
