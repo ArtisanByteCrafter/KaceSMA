@@ -1,4 +1,4 @@
-Function Get-Asset {
+Function Get-ManagedInstall {
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low'
@@ -18,11 +18,11 @@ Function Get-Asset {
 
         [Parameter()]
         [int]
-        $AssetID,
+        $ManagedInstallID,
 
         [Parameter()]
         [switch]
-        $AsBarcodes,
+        $ListCompatibleMachines,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -30,11 +30,11 @@ Function Get-Asset {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/asset/assets/'
-        If ($AssetID) {
-            $Endpoint = "/api/asset/assets/$AssetID/"
-            If ($AsBarcodes) {
-                $Endpoint = "/api/asset/assets/$AssetID/barcodes"
+        $Endpoint = '/api/managed_install/managed_installs/'
+        If ($ManagedInstallID) {
+            $Endpoint = "/api/managed_install/managed_installs/$ManagedInstallID/"
+            If ($ListCompatibleMachines) {
+                $Endpoint = "/api/managed_install/managed_installs/$ManagedInstallID/compatible_machines"
             }
         }
     }

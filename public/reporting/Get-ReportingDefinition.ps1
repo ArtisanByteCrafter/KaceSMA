@@ -1,4 +1,4 @@
-Function Get-Asset {
+Function Get-ReportingDefinition {
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low'
@@ -16,13 +16,17 @@ Function Get-Asset {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
+        [Parameter(ParameterSetName='A')]
         [int]
-        $AssetID,
+        $DefinitionID,
 
-        [Parameter()]
-        [switch]
-        $AsBarcodes,
+        [Parameter(ParameterSetName='B')]
+        [string]
+        $DefinitionName,
+
+        [Parameter(ParameterSetName='C')]
+        [string]
+        $DistinctField,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -30,12 +34,15 @@ Function Get-Asset {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/asset/assets/'
-        If ($AssetID) {
-            $Endpoint = "/api/asset/assets/$AssetID/"
-            If ($AsBarcodes) {
-                $Endpoint = "/api/asset/assets/$AssetID/barcodes"
-            }
+        $Endpoint = '/api/reporting/definitions/'
+        If ($DefinitionID) {
+            $Endpoint = "/api/reporting/definitions/$DefinitionID/"
+        }
+        If ($DefinitionName) {
+            $Endpoint = "/api/reporting/definitions/$DefinitionName/"
+        }
+        If ($DistinctField) {
+            $Endpoint = "/api/reporting/definitions/$DistinctField"
         }
     }
     Process {

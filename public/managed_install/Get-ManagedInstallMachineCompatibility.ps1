@@ -1,4 +1,4 @@
-Function Get-Asset {
+Function Get-ManagedInstallMachineCompatibility {
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low'
@@ -16,13 +16,9 @@ Function Get-Asset {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [int]
-        $AssetID,
-
-        [Parameter()]
-        [switch]
-        $AsBarcodes,
+        $MachineID,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -30,13 +26,7 @@ Function Get-Asset {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/asset/assets/'
-        If ($AssetID) {
-            $Endpoint = "/api/asset/assets/$AssetID/"
-            If ($AsBarcodes) {
-                $Endpoint = "/api/asset/assets/$AssetID/barcodes"
-            }
-        }
+        $Endpoint = "/api/managed_install/machines/$MachineID/"
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server)) {

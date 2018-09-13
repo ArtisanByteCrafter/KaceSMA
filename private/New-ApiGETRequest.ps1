@@ -34,7 +34,7 @@ Function New-ApiGETRequest {
     $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
     $headers.Add('Accept', 'application/json')
     $headers.Add('Content-Type', 'application/json')
-    $headers.Add('x-dell-api-version', '5')
+    $headers.Add('x-dell-api-version', '8')
     $Request = Invoke-WebRequest -Uri $Uri -Headers $headers -Body $Body -Method POST -WebSession $session -UseBasicParsing
     $CSRFToken = $request.Headers.'x-dell-csrf-token'
     $headers.Add("x-dell-csrf-token", "$CSRFToken")
