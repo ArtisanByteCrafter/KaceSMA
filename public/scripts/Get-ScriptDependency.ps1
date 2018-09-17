@@ -1,8 +1,7 @@
-Function Get-OperatingSystemInventory {
+Function Get-ScriptDependency {
     <#
     .DESCRIPTION
-        Returns information about operating systems for SMA inventory devices, or for  specific inventory device.
-      
+        Returns information about dependencies for a specific script.
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -14,8 +13,11 @@ Function Get-OperatingSystemInventory {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER MAchineID
-        (Optional) Use if you want to return the operating system information about a specific inventory device.
+    .PARAMETER ScriptID
+        The ID of the script whose dependencies you want to retrieve.
+    
+    .PARAMETER DependencyName
+        (Optional) The ID of the dependency for a specific script you want to retrieve.
 
     .PARAMETER QueryParameters
         (Optional) Any additional query parameters to be included. String must begin with a <?> character.
@@ -26,14 +28,9 @@ Function Get-OperatingSystemInventory {
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential)
+        Get-SmaScriptDependency -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ScriptID 1234
 
-        Retrieves information about all inventory devices' operating systems.
-        
-    .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential) -MachineID 1234
-
-        Retrieves operating system information for an inventory device with ID 1234.
+        Retrieves information about the dependencies for a script with ID 1234.
 
     .NOTES
        
@@ -55,9 +52,13 @@ Function Get-OperatingSystemInventory {
         [PSCredential]
         $Credential,
 
+        [Parameter(Mandatory = $true)]
+        [int]
+        $ScriptID,
+
         [Parameter()]
         [string]
-        $MachineID,
+        $DependencyName,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -65,10 +66,11 @@ Function Get-OperatingSystemInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/operating_systems/'
-        If ($MachineID) {
-            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
+        $Endpoint = "/api/script/$ScriptID/dependencies"
+        If ($DependencyName) {
+            $Endpoint = "/api/script/$ScriptID/dependency/$DependencyName"
         }
+
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {

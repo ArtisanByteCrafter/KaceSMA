@@ -55,7 +55,7 @@ Function Get-AssetType {
         $Endpoint = '/api/asset/assets/types'
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server)) {
+        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
             New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
         }
     }

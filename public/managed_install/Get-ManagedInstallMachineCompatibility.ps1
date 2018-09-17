@@ -63,7 +63,7 @@ Function Get-ManagedInstallMachineCompatibility {
         $Endpoint = "/api/managed_install/machines/$MachineID/"
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server)) {
+        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
             New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
         }
     }
