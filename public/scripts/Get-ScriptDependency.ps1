@@ -17,7 +17,7 @@ Function Get-ScriptDependency {
         The ID of the script whose dependencies you want to retrieve.
     
     .PARAMETER DependencyName
-        (Optional) The ID of the dependency for a specific script you want to retrieve.
+        (Optional) The ID of the dependency for a specific script you want to retrieve. If omitted, will return all dependencies
 
     .PARAMETER QueryParameters
         (Optional) Any additional query parameters to be included. String must begin with a <?> character.

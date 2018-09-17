@@ -1,4 +1,4 @@
-Function New-ApiGETRequest {
+Function New-ApiPOSTRequest {
     param (
         [Parameter(Mandatory = $true)]
         [String]
@@ -16,9 +16,8 @@ Function New-ApiGETRequest {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
-        [String]
-        $QueryParameters
+        [Parameter(Mandatory = $true)]
+        $Body
     )
 
     $Auth = @{
@@ -40,8 +39,5 @@ Function New-ApiGETRequest {
     $headers.Add("x-dell-csrf-token", "$CSRFToken")
     $APIUrl = ("$Server" + "$Endpoint")
 
-    If ($QueryParameters) {
-        $APIUrl = $APIUrl + $QueryParameters
-    }
-    Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method GET -WebSession $session -UseBasicParsing
+    Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method POST -WebSession $session -UseBasicParsing -Body $Body
 }
