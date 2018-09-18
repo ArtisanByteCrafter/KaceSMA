@@ -35,14 +35,14 @@ Function New-ScriptTask {
                     'id'= 27
                     'params'= [ordered]@{
                         'type'='status'
-                        'message'='test remediation message2'
+                        'message'='this is a test message'
                     }
                 }
             )
         }
         New-SmaScriptTask -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ScriptID 1234 -Body $taskparams
 
-        Creates a new task, gives it 2 attempts with a break on failure. On remediation failure, it logs a status message.
+        Creates a new task for script ID 1234, gives it 2 attempts with a break on failure. On remediation failure, it logs a status message.
 
     .NOTES
        

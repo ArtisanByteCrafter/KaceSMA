@@ -16,8 +16,12 @@ Function New-ApiPOSTRequest {
         [PSCredential]
         $Credential,
 
-        [Parameter(Mandatory = $true)]
-        $Body
+        [Parameter()]
+        $Body,
+
+        [Parameter()]
+        [String]
+        $QueryParameters
     )
 
     $Auth = @{
@@ -39,5 +43,13 @@ Function New-ApiPOSTRequest {
     $headers.Add("x-dell-csrf-token", "$CSRFToken")
     $APIUrl = ("$Server" + "$Endpoint")
 
-    Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method POST -WebSession $session -UseBasicParsing -Body ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
+    If ($QueryParameters) {
+        $APIUrl = $APIUrl + $QueryParameters
+    }
+
+    If ($Body) {
+        Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method POST -WebSession $session -UseBasicParsing -Body ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
+    } else {
+        Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method POST -WebSession $session -UseBasicParsing
+    }
 }
