@@ -27,20 +27,22 @@ Function New-ScriptTask {
         PSCustomObject
 
     .EXAMPLE
-        $body = @{
+        $taskparams = @{
             'attempts' = 2
-            'onFailure' = 'Break'
-            'onRemediationFailure' = @{
-                'id'=27
-                'params'= @{
-                    'type'='status'
-                    'message'='test remediation message2'
+            'onFailure' = 'break'
+            'onRemediationFailure' = @(
+                @{
+                    'id'= 27
+                    'params'= [ordered]@{
+                        'type'='status'
+                        'message'='test remediation message2'
+                    }
                 }
-            }
+            )
         }
-        New-SmaScriptTask -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ScriptID 1234 -Body $Body
+        New-SmaScriptTask -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ScriptID 1234 -Body $taskparams
 
-        Retrieves task information about a script with ID 1234.
+        Creates a new task, gives it 2 attempts with a break on failure. On remediation failure, it logs a status message.
 
     .NOTES
        
@@ -77,7 +79,7 @@ Function New-ScriptTask {
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
-            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body ($Body | ConvertTo-Json -Compress -Depth 99 -ErrorAction Stop)
+            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
         }
     }
     End {}

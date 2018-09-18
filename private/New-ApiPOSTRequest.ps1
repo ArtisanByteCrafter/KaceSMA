@@ -39,5 +39,5 @@ Function New-ApiPOSTRequest {
     $headers.Add("x-dell-csrf-token", "$CSRFToken")
     $APIUrl = ("$Server" + "$Endpoint")
 
-    Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method POST -WebSession $session -UseBasicParsing -Body $Body
+    Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method POST -WebSession $session -UseBasicParsing -Body ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
 }
