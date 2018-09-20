@@ -17,9 +17,6 @@ Function Get-ScriptRunStatus {
     .PARAMETER RunID
         The ID of the job who's run status you want to return.
 
-    .PARAMETER QueryParameters
-        (Optional) Any additional query parameters to be included. String must begin with a <?> character.
-
     .INPUTS
 
     .OUTPUTS
@@ -52,12 +49,7 @@ Function Get-ScriptRunStatus {
 
         [Parameter(Mandatory = $true)]
         [int]
-        $RunID,
-
-        [Parameter()]
-        [ValidatePattern("^\?")]
-        [string]
-        $QueryParameters
+        $RunID
     )
     Begin {
         $Endpoint = "/api/script/runStatus/$RunID"
@@ -65,7 +57,7 @@ Function Get-ScriptRunStatus {
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
         }
     }
     End {}

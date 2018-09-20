@@ -19,9 +19,6 @@ Function Get-ScriptDependency {
     .PARAMETER DependencyName
         (Optional) The ID of the dependency for a specific script you want to retrieve. If omitted, will return all dependencies
 
-    .PARAMETER QueryParameters
-        (Optional) Any additional query parameters to be included. String must begin with a <?> character.
-
     .INPUTS
 
     .OUTPUTS
@@ -58,12 +55,7 @@ Function Get-ScriptDependency {
 
         [Parameter()]
         [string]
-        $DependencyName,
-
-        [Parameter()]
-        [ValidatePattern("^\?")]
-        [string]
-        $QueryParameters
+        $DependencyName
     )
     Begin {
         $Endpoint = "/api/script/$ScriptID/dependencies"
@@ -74,7 +66,7 @@ Function Get-ScriptDependency {
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
         }
     }
     End {}

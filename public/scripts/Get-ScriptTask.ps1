@@ -16,8 +16,9 @@ Function Get-ScriptTask {
     .PARAMETER ScriptID
         The ID of the script who's tasks you'd like information about.
 
-    .PARAMETER TaskID
-
+    .PARAMETER OrderID
+        (Optional) The order (ordinal) ID of a specific task to be returned.
+        The first task in a script is ordinal ID 0, and increments from there.
     .PARAMETER QueryParameters
         (Optional) Any additional query parameters to be included. String must begin with a <?> character.
 
@@ -56,16 +57,18 @@ Function Get-ScriptTask {
         $ScriptID,
 
         [Parameter()]
-        [ValidatePattern("^\?")]
-        [string]
-        $QueryParameters
+        [int]
+        $OrderID
     )
     Begin {
         $Endpoint = "/api/script/$ScriptID/tasks"
+        If ($OrderID) {
+            $Endpoint = "/api/script/$ScriptID/task/$OrderID"
+        }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
         }
     }
     End {}
