@@ -17,7 +17,6 @@ Function New-ApiPOSTRequest {
         $Credential,
 
         [Parameter()]
-        [Hashtable]
         $Body,
 
         [Parameter()]
