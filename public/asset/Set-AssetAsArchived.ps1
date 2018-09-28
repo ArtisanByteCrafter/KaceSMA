@@ -26,7 +26,7 @@ Function Set-AssetAsArchived {
     .EXAMPLE
         
 
-        Archive-SmaAsset -Server https://kace.example.com -Org Default -Credential (Get-Credential) -AssetID 1234
+        Set-SmaAssetAsArchived -Server https://kace.example.com -Org Default -Credential (Get-Credential) -AssetID 1234
 
         Archives an asset with ID 1234
 
