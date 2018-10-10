@@ -1,7 +1,7 @@
-Function Get-BarcodeAsset {
-     <#
+Function Get-ScriptRunStatus {
+    <#
     .DESCRIPTION
-        Returns information about an SMA barcode.
+        Returns information about the status of a running script using the runID. Equivalent to the 'Run Now Status' in the SMA admin page.
       
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
@@ -14,21 +14,18 @@ Function Get-BarcodeAsset {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER BarcodeID
-        (Optional) Use if you want to return a specific barcode from the SMA.
+    .PARAMETER RunID
+        The ID of the job who's run status you want to return.
 
-    .PARAMETER QueryParameters
-        (Optional) Any additional query parameters to be included. String must begin with a <?> character.
-        
     .INPUTS
 
     .OUTPUTS
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaBarcodeAsset -Server https://kace.example.com -Org Default -Credential (Get-Credential) -BarcodeID 1234
+        Get-SmaScriptRunStatus -Server https://kace.example.com -Org Default -Credential (Get-Credential) -RunID 1234
 
-        Retrieves information about a barcode with ID 1234.
+        Retrieves the runStatus of job with ID 1234.
 
     .NOTES
        
@@ -50,24 +47,17 @@ Function Get-BarcodeAsset {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [int]
-        $BarcodeID,
-
-        [Parameter()]
-        [ValidatePattern("^\?")]
-        [string]
-        $QueryParameters
+        $RunID
     )
     Begin {
-        $Endpoint = '/api/asset/barcodes'
-        If ($BarcodeID) {
-            $Endpoint = "/api/asset/barcodes/$BarcodeID/"
-        }
+        $Endpoint = "/api/script/runStatus/$RunID"
+
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
         }
     }
     End {}

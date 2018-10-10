@@ -1,8 +1,7 @@
-Function Get-OperatingSystemInventory {
+Function Get-ServiceDeskTicketTemplate {
     <#
     .DESCRIPTION
-        Returns information about operating systems for SMA inventory devices, or for  specific inventory device.
-      
+        Returns a ticket template for the specified queue, usable for ticket creation.
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -14,8 +13,8 @@ Function Get-OperatingSystemInventory {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER MAchineID
-        (Optional) Use if you want to return the operating system information about a specific inventory device.
+    .PARAMETER QueueID
+         The ID of the queue who's ticket templates you'd like information about.
 
     .PARAMETER QueryParameters
         (Optional) Any additional query parameters to be included. String must begin with a <?> character.
@@ -25,15 +24,11 @@ Function Get-OperatingSystemInventory {
     .OUTPUTS
         PSCustomObject
 
+         
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential)
+        Get-SmaServiceDeskTicketTemplate -Server https://kace.example.com -Org Default -Credential (Get-Credential) -QueueID 1234
 
-        Retrieves information about all inventory devices' operating systems.
-        
-    .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential) -MachineID 1234
-
-        Retrieves operating system information for an inventory device with ID 1234.
+        Retrieves information about a queue with ID 1234.
 
     .NOTES
        
@@ -55,9 +50,9 @@ Function Get-OperatingSystemInventory {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
-        [string]
-        $MachineID,
+        [Parameter(Mandatory = $true)]
+        [int]
+        $QueueID,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -65,13 +60,11 @@ Function Get-OperatingSystemInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/operating_systems/'
-        If ($MachineID) {
-            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
-        }
+        $Endpoint = "/api/service_desk/queues/$QueueID/ticket_template"
+        
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
         }
     }

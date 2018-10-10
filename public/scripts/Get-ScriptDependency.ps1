@@ -1,8 +1,7 @@
-Function Get-BarcodeAsset {
-     <#
+Function Get-ScriptDependency {
+    <#
     .DESCRIPTION
-        Returns information about an SMA barcode.
-      
+        Returns information about dependencies for a specific script.
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -14,21 +13,21 @@ Function Get-BarcodeAsset {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER BarcodeID
-        (Optional) Use if you want to return a specific barcode from the SMA.
+    .PARAMETER ScriptID
+        The ID of the script whose dependencies you want to retrieve.
+    
+    .PARAMETER DependencyName
+        (Optional) The ID of the dependency for a specific script you want to retrieve. If omitted, will return all dependencies
 
-    .PARAMETER QueryParameters
-        (Optional) Any additional query parameters to be included. String must begin with a <?> character.
-        
     .INPUTS
 
     .OUTPUTS
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaBarcodeAsset -Server https://kace.example.com -Org Default -Credential (Get-Credential) -BarcodeID 1234
+        Get-SmaScriptDependency -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ScriptID 1234
 
-        Retrieves information about a barcode with ID 1234.
+        Retrieves information about the dependencies for a script with ID 1234.
 
     .NOTES
        
@@ -50,24 +49,24 @@ Function Get-BarcodeAsset {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [int]
-        $BarcodeID,
+        $ScriptID,
 
         [Parameter()]
-        [ValidatePattern("^\?")]
         [string]
-        $QueryParameters
+        $DependencyName
     )
     Begin {
-        $Endpoint = '/api/asset/barcodes'
-        If ($BarcodeID) {
-            $Endpoint = "/api/asset/barcodes/$BarcodeID/"
+        $Endpoint = "/api/script/$ScriptID/dependencies"
+        If ($DependencyName) {
+            $Endpoint = "/api/script/$ScriptID/dependency/$DependencyName"
         }
+
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
         }
     }
     End {}

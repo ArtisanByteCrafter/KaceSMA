@@ -1,7 +1,7 @@
-Function Get-OperatingSystemInventory {
+Function Get-ManagedInstallMachineCompatibility {
     <#
     .DESCRIPTION
-        Returns information about operating systems for SMA inventory devices, or for  specific inventory device.
+        Returns managed installs associated with a machine ID.
       
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
@@ -14,9 +14,9 @@ Function Get-OperatingSystemInventory {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER MAchineID
-        (Optional) Use if you want to return the operating system information about a specific inventory device.
-
+    .PARAMETER MachineID
+        The ID of the inventory machine you wish to retrieve the managed installs for.
+    
     .PARAMETER QueryParameters
         (Optional) Any additional query parameters to be included. String must begin with a <?> character.
 
@@ -26,14 +26,9 @@ Function Get-OperatingSystemInventory {
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential)
+        Get-SmaManagedInstallMachineCompatibility -Server https://kace.example.com -Org Default -Credential (Get-Credential) -MachineID 1234
 
-        Retrieves information about all inventory devices' operating systems.
-        
-    .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential) -MachineID 1234
-
-        Retrieves operating system information for an inventory device with ID 1234.
+        Retrieves managed install information about an inventory device with ID 1234
 
     .NOTES
        
@@ -55,8 +50,8 @@ Function Get-OperatingSystemInventory {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
-        [string]
+        [Parameter(Mandatory = $true)]
+        [int]
         $MachineID,
 
         [Parameter()]
@@ -65,10 +60,7 @@ Function Get-OperatingSystemInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/operating_systems/'
-        If ($MachineID) {
-            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
-        }
+        $Endpoint = "/api/managed_install/machines/$MachineID/"
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {

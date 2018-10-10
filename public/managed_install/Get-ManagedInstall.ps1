@@ -1,7 +1,7 @@
-Function Get-OperatingSystemInventory {
+Function Get-ManagedInstall {
     <#
     .DESCRIPTION
-        Returns information about operating systems for SMA inventory devices, or for  specific inventory device.
+        Returns information about SMA managed installs.
       
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
@@ -14,8 +14,11 @@ Function Get-OperatingSystemInventory {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER MAchineID
-        (Optional) Use if you want to return the operating system information about a specific inventory device.
+    .PARAMETER ManagedInstallID
+        (Optional) Use if you want to return the information about a specific managed install.
+
+    .PARAMETER ListCompatibleMachines
+        (Optional) Use with -ManagedInstallID if you want to return all machines compatible with a specific managed install.
 
     .PARAMETER QueryParameters
         (Optional) Any additional query parameters to be included. String must begin with a <?> character.
@@ -26,14 +29,19 @@ Function Get-OperatingSystemInventory {
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential)
+        Get-SmaManagedInstall -Server https://kace.example.com -Org Default -Credential (Get-Credential)
 
-        Retrieves information about all inventory devices' operating systems.
+        Retrieves information about all managed installs.
         
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential) -MachineID 1234
+        Get-SmaManagedInstall -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ManagedInstallID 1234
 
-        Retrieves operating system information for an inventory device with ID 1234.
+        Retrieves information for a managed install with ID 1234.
+
+    .EXAMPLE
+        Get-SmaManagedInstall -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ManagedInstallID 1234 -ListCompatibleMachines
+
+        Retrieves machines compatible with -managedinstallID 1234
 
     .NOTES
        
@@ -56,8 +64,12 @@ Function Get-OperatingSystemInventory {
         $Credential,
 
         [Parameter()]
-        [string]
-        $MachineID,
+        [int]
+        $ManagedInstallID,
+
+        [Parameter()]
+        [switch]
+        $ListCompatibleMachines,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -65,9 +77,12 @@ Function Get-OperatingSystemInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/operating_systems/'
-        If ($MachineID) {
-            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
+        $Endpoint = '/api/managed_install/managed_installs/'
+        If ($ManagedInstallID) {
+            $Endpoint = "/api/managed_install/managed_installs/$ManagedInstallID/"
+            If ($ListCompatibleMachines) {
+                $Endpoint = "/api/managed_install/managed_installs/$ManagedInstallID/compatible_machines"
+            }
         }
     }
     Process {

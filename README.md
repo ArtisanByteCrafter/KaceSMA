@@ -5,7 +5,16 @@ A module for interacting with a Quest Kace Systems Management Appliance via Powe
 
 This module utilizes the Kace SMA API via Powershell and returns PS Objects that can be used in innumerable automation tasks.
 
-**Version 1.x will be read only (GET requests) and available here on GitLab. Subsequent versions will be published to the PSGallery and available via `Install-Module`.**
+This module is [available on the Powershell Gallery](https://www.powershellgallery.com/packages/KaceSMA/)
+
+**To Install:**
+````powershell
+Install-Module KaceSMA
+````
+
+**Questions or comments?**
+
+Join the community Slack channel (#API) at https://kacecommunity.slack.com/
 
 Brief Overview:
 ---

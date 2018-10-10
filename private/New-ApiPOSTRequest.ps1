@@ -1,4 +1,4 @@
-Function New-ApiGETRequest {
+Function New-ApiPOSTRequest {
     param (
         [Parameter(Mandatory = $true)]
         [String]
@@ -15,6 +15,9 @@ Function New-ApiGETRequest {
         [Parameter(Mandatory = $True)]
         [PSCredential]
         $Credential,
+
+        [Parameter()]
+        $Body,
 
         [Parameter()]
         [String]
@@ -43,5 +46,10 @@ Function New-ApiGETRequest {
     If ($QueryParameters) {
         $APIUrl = $APIUrl + $QueryParameters
     }
-    Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method GET -WebSession $session -UseBasicParsing
+
+    If ($Body) {
+        Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method POST -WebSession $session -UseBasicParsing -Body ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
+    } else {
+        Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method POST -WebSession $session -UseBasicParsing
+    }
 }

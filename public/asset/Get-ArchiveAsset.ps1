@@ -1,7 +1,7 @@
-Function Get-OperatingSystemInventory {
+Function Get-ArchiveAsset {
     <#
     .DESCRIPTION
-        Returns information about operating systems for SMA inventory devices, or for  specific inventory device.
+        Returns information about an SMA archived asset.
       
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
@@ -14,11 +14,8 @@ Function Get-OperatingSystemInventory {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER MAchineID
-        (Optional) Use if you want to return the operating system information about a specific inventory device.
-
-    .PARAMETER QueryParameters
-        (Optional) Any additional query parameters to be included. String must begin with a <?> character.
+    .PARAMETER AssetID
+        The ID of the archived asset you want to retrieve.
 
     .INPUTS
 
@@ -26,14 +23,9 @@ Function Get-OperatingSystemInventory {
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential)
+        Get-SmaArchivedAsset -Server https://kace.example.com -Org Default -Credential (Get-Credential) -AssetID 1234
 
-        Retrieves information about all inventory devices' operating systems.
-        
-    .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential) -MachineID 1234
-
-        Retrieves operating system information for an inventory device with ID 1234.
+        Retrieves information about an archived asset with ID 1234.
 
     .NOTES
        
@@ -56,8 +48,8 @@ Function Get-OperatingSystemInventory {
         $Credential,
 
         [Parameter()]
-        [string]
-        $MachineID,
+        [int]
+        $AssetID,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -65,10 +57,7 @@ Function Get-OperatingSystemInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/operating_systems/'
-        If ($MachineID) {
-            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
-        }
+        $Endpoint = "/api/asset/archived_devices/$AssetID"
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {

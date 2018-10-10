@@ -1,7 +1,7 @@
-Function Get-BarcodeAsset {
-     <#
+Function Set-AssetAsArchived {
+    <#
     .DESCRIPTION
-        Returns information about an SMA barcode.
+        Archives an existing SMA asset.
       
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
@@ -14,21 +14,21 @@ Function Get-BarcodeAsset {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER BarcodeID
-        (Optional) Use if you want to return a specific barcode from the SMA.
 
-    .PARAMETER QueryParameters
-        (Optional) Any additional query parameters to be included. String must begin with a <?> character.
-        
+    .PARAMETER AssetID
+        The ID of the asset you want to archive.
+    
     .INPUTS
 
     .OUTPUTS
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaBarcodeAsset -Server https://kace.example.com -Org Default -Credential (Get-Credential) -BarcodeID 1234
+        
 
-        Retrieves information about a barcode with ID 1234.
+        Set-SmaAssetAsArchived -Server https://kace.example.com -Org Default -Credential (Get-Credential) -AssetID 1234
+
+        Archives an asset with ID 1234
 
     .NOTES
        
@@ -52,22 +52,14 @@ Function Get-BarcodeAsset {
 
         [Parameter()]
         [int]
-        $BarcodeID,
-
-        [Parameter()]
-        [ValidatePattern("^\?")]
-        [string]
-        $QueryParameters
+        $AssetID
     )
     Begin {
-        $Endpoint = '/api/asset/barcodes'
-        If ($BarcodeID) {
-            $Endpoint = "/api/asset/barcodes/$BarcodeID/"
-        }
+        $Endpoint = "/api/asset/assets/$AssetID/archive/"
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+        If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
+            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
         }
     }
     End {}

@@ -1,8 +1,9 @@
-Function Get-OperatingSystemInventory {
+Function Get-ServiceDeskTicket {
     <#
     .DESCRIPTION
-        Returns information about operating systems for SMA inventory devices, or for  specific inventory device.
-      
+        Returns a list of all tickets. Sub-entities that can be used on shaping and filtering directives include owner,
+        submitter, queue, category, priority, status, machine, asset, related_tickets, referring_tickets
+
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -14,9 +15,6 @@ Function Get-OperatingSystemInventory {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER MAchineID
-        (Optional) Use if you want to return the operating system information about a specific inventory device.
-
     .PARAMETER QueryParameters
         (Optional) Any additional query parameters to be included. String must begin with a <?> character.
 
@@ -26,17 +24,22 @@ Function Get-OperatingSystemInventory {
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential)
+        $queryparameters = "?BY_STATE_TICKETS=all_notclosed&QUEUE_ID=0"
 
-        Retrieves information about all inventory devices' operating systems.
-        
+        Get-SmaServiceDeskTicket -Server https://kace.example.com -Org Default -Credential (Get-Credential) -QueryParameters $queryparameters
+
+        Retrieves all "not closed" state tickets from all queues (ID=0)
+
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential) -MachineID 1234
 
-        Retrieves operating system information for an inventory device with ID 1234.
+        $queryparameters = "?shaping= hd_ticket regular,owner limited,submitter limited"
+
+        Get-SmaServiceDeskTicket -Server $server -Credential $credentials -ticketID 1234 -QueryParameters $queryparameters
+
+        Retrieves the standard attributes, plus owner and submitter for ticket ID 1234
 
     .NOTES
-       
+
     #>
     [cmdletBinding(
         SupportsShouldProcess = $true,
@@ -55,9 +58,9 @@ Function Get-OperatingSystemInventory {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
-        [string]
-        $MachineID,
+
+        [int]
+        $TicketID,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -65,13 +68,14 @@ Function Get-OperatingSystemInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/operating_systems/'
-        If ($MachineID) {
-            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
+        $Endpoint = "/api/service_desk/tickets/"
+        If ($TicketID){
+            $Endpoint = "/api/service_desk/tickets/$TicketID"
         }
+        
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
         }
     }

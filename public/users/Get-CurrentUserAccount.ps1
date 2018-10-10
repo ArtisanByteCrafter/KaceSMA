@@ -1,8 +1,8 @@
-Function Get-BarcodeAsset {
-     <#
+Function Get-CurrentUserAccount {
+    <#
     .DESCRIPTION
-        Returns information about an SMA barcode.
-      
+        Returns information about the current SMA user account being used to perform the api query.
+
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -14,21 +14,15 @@ Function Get-BarcodeAsset {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER BarcodeID
-        (Optional) Use if you want to return a specific barcode from the SMA.
-
-    .PARAMETER QueryParameters
-        (Optional) Any additional query parameters to be included. String must begin with a <?> character.
-        
     .INPUTS
 
     .OUTPUTS
         PSCustomObject
-
+    
     .EXAMPLE
-        Get-SmaBarcodeAsset -Server https://kace.example.com -Org Default -Credential (Get-Credential) -BarcodeID 1234
-
-        Retrieves information about a barcode with ID 1234.
+        Get-SmaCurrentUserAccount -Server https://kace.example.com -Org Default -Credential (Get-Credential)
+        
+        Retrieves information about the current API user performing the query.
 
     .NOTES
        
@@ -48,25 +42,13 @@ Function Get-BarcodeAsset {
 
         [Parameter(Mandatory = $true)]
         [PSCredential]
-        $Credential,
-
-        [Parameter()]
-        [int]
-        $BarcodeID,
-
-        [Parameter()]
-        [ValidatePattern("^\?")]
-        [string]
-        $QueryParameters
+        $Credential
     )
     Begin {
-        $Endpoint = '/api/asset/barcodes'
-        If ($BarcodeID) {
-            $Endpoint = "/api/asset/barcodes/$BarcodeID/"
-        }
+        $Endpoint = "/api/users/me/"
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
+        If ($PSCmdlet.ShouldProcess($Server)) {
             New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
         }
     }

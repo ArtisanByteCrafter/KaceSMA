@@ -1,8 +1,8 @@
-Function Get-OperatingSystemInventory {
+Function Get-ReportingDefinition {
     <#
-    .DESCRIPTION
-        Returns information about operating systems for SMA inventory devices, or for  specific inventory device.
-      
+      .DESCRIPTION
+        //todo
+
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -14,8 +14,12 @@ Function Get-OperatingSystemInventory {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER MAchineID
-        (Optional) Use if you want to return the operating system information about a specific inventory device.
+    .PARAMETER DefinitionID
+        //todo
+    .PARAMETER DefinitionName
+        //todo
+    .PARAMETER DistinctField
+       //todo
 
     .PARAMETER QueryParameters
         (Optional) Any additional query parameters to be included. String must begin with a <?> character.
@@ -26,14 +30,10 @@ Function Get-OperatingSystemInventory {
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential)
-
-        Retrieves information about all inventory devices' operating systems.
+        //todo
         
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential) -MachineID 1234
-
-        Retrieves operating system information for an inventory device with ID 1234.
+        //todo
 
     .NOTES
        
@@ -55,9 +55,17 @@ Function Get-OperatingSystemInventory {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
+        [Parameter(ParameterSetName='A')]
+        [int]
+        $DefinitionID,
+
+        [Parameter(ParameterSetName='B')]
         [string]
-        $MachineID,
+        $DefinitionName,
+
+        [Parameter(ParameterSetName='C')]
+        [string]
+        $DistinctField,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -65,9 +73,15 @@ Function Get-OperatingSystemInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/operating_systems/'
-        If ($MachineID) {
-            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
+        $Endpoint = '/api/reporting/definitions/'
+        If ($DefinitionID) {
+            $Endpoint = "/api/reporting/definitions/$DefinitionID/"
+        }
+        If ($DefinitionName) {
+            $Endpoint = "/api/reporting/definitions/$DefinitionName/"
+        }
+        If ($DistinctField) {
+            $Endpoint = "/api/reporting/definitions/$DistinctField"
         }
     }
     Process {

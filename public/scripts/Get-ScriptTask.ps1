@@ -1,8 +1,7 @@
-Function Get-OperatingSystemInventory {
+Function Get-ScriptTask {
     <#
     .DESCRIPTION
-        Returns information about operating systems for SMA inventory devices, or for  specific inventory device.
-      
+        Returns task information about a specific script.
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -14,9 +13,12 @@ Function Get-OperatingSystemInventory {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER MAchineID
-        (Optional) Use if you want to return the operating system information about a specific inventory device.
+    .PARAMETER ScriptID
+        The ID of the script who's tasks you'd like information about.
 
+    .PARAMETER OrderID
+        (Optional) The order (ordinal) ID of a specific task to be returned.
+        The first task in a script is ordinal ID 0, and increments from there.
     .PARAMETER QueryParameters
         (Optional) Any additional query parameters to be included. String must begin with a <?> character.
 
@@ -26,14 +28,9 @@ Function Get-OperatingSystemInventory {
         PSCustomObject
 
     .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential)
+        Get-SmaScriptTask -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ScriptID 1234
 
-        Retrieves information about all inventory devices' operating systems.
-        
-    .EXAMPLE
-        Get-SmaOperatingSystemInventory -Server https://kace.example.com -Org Default -Credential (Get-Credential) -MachineID 1234
-
-        Retrieves operating system information for an inventory device with ID 1234.
+        Retrieves task information about a script with ID 1234.
 
     .NOTES
        
@@ -55,24 +52,23 @@ Function Get-OperatingSystemInventory {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
-        [string]
-        $MachineID,
+        [Parameter(Mandatory = $true)]
+        [int]
+        $ScriptID,
 
         [Parameter()]
-        [ValidatePattern("^\?")]
-        [string]
-        $QueryParameters
+        [int]
+        $OrderID
     )
     Begin {
-        $Endpoint = '/api/inventory/operating_systems/'
-        If ($MachineID) {
-            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
+        $Endpoint = "/api/script/$ScriptID/tasks"
+        If ($OrderID) {
+            $Endpoint = "/api/script/$ScriptID/task/$OrderID"
         }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
         }
     }
     End {}
