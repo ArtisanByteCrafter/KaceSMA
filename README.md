@@ -22,6 +22,6 @@ Full documentation can be found at the [Wiki](https://gitlab.com/ArtisanByteCraf
 
 
 * [Install and Configure](https://gitlab.com/ArtisanByteCrafter/KaceSMA/wikis/setup-and-import-the-KaceSMA-module)
-* [Example Query Parameters](https://gitlab.com/ArtisanByteCrafter/KaceSMA/wikis/example-query-parameters)
+* [Example Query Parameters](https://gitlab.com/ArtisanByteCrafter/KaceSMA/wikis/example-requests)
 * [Frequently Asked Questions](https://gitlab.com/ArtisanByteCrafter/KaceSMA/wikis/faq)
 
