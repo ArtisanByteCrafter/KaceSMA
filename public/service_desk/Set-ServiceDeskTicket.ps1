@@ -1,9 +1,8 @@
-Function New-Script {
+Function Set-ServiceDeskTicket {
     <#
     .DESCRIPTION
-        Creates a new script. The -Body payload parameters determine what type of script is created.
-        Types of script include online/offline kscript and online/offline shell script.
-
+        Updates a ticket.
+      
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -15,8 +14,9 @@ Function New-Script {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER Body
-        A hashtable-formatted payload with parameters for the new script.
+    .PARAMETER TicketID
+        The ID of the ticket you want to update
+
 
     .INPUTS
 
@@ -24,19 +24,13 @@ Function New-Script {
         PSCustomObject
 
     .EXAMPLE
-    $scriptparams = @{
-        'name' = 'xMy New Script'
-        'description' = 'This script is amazing.'
-        'enabled' = $False
-        'status' = 'Draft'
-        'notes'='These are the notes'
-        'scheduleType'='online-kscript'
-        'alertEnabled' = $False
-    }
-        New-SmaScript -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ScriptID 1234 -Body $scriptparams
 
-        Creates a new  script with the given parameters.
+
+        Set-SmaServiceDeskTicket -Server https://kace.example.com -Org Default -Credential (Get-Credential) -TicketID 1234 -Body $TicketUpdate
+
+        Updates a ticket with ID 1234 with the information provided by the $body
         
+
     .NOTES
        
     #>
@@ -45,6 +39,10 @@ Function New-Script {
         ConfirmImpact = 'medium'
     )]
     param(
+        [Parameter(Mandatory = $true,Position=0)]
+        [string]
+        $TicketID,
+
         [Parameter(Mandatory = $true)]
         [string]
         $Server,
@@ -61,14 +59,13 @@ Function New-Script {
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
-
     )
     Begin {
-        $Endpoint = "/api/script" # Not Working yet, so not exposed
+        $Endpoint = "/api/service_desk/tickets/$TicketID/"
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
-            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
+        If ($PSCmdlet.ShouldProcess($Server,"PUT $Endpoint")) {
+            New-ApiPUTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
         }
     }
     End {}
