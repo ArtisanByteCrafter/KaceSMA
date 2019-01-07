@@ -7,13 +7,14 @@ This module utilizes the Kace SMA API via Powershell and returns PS Objects that
 
 This module is [available on the Powershell Gallery](https://www.powershellgallery.com/packages/KaceSMA/)
 
-**To Install:**
+To Install:
+---
 ````powershell
 Install-Module KaceSMA
 ````
 
-**Questions or comments?**
-
+Questions or comments?
+---
 Join the community Slack channel (#API) at https://kacecommunity.slack.com/
 
 Brief Overview:
@@ -21,7 +22,9 @@ Brief Overview:
 Full documentation can be found at the [Wiki](https://gitlab.com/ArtisanByteCrafter/KaceSMA/wikis/home)
 
 
-* [Install and Configure](https://gitlab.com/ArtisanByteCrafter/KaceSMA/wikis/setup-and-import-the-KaceSMA-module)
-* [Example Query Parameters](https://gitlab.com/ArtisanByteCrafter/KaceSMA/wikis/example-requests)
-* [Frequently Asked Questions](https://gitlab.com/ArtisanByteCrafter/KaceSMA/wikis/faq)
+Wiki
+---
+* [Home](https://github.com/artvandelay440/KaceSMA/wiki)
+* [Frequently Asked Questions](https://github.com/artvandelay440/KaceSMA/wiki/FAQ)
+
 
