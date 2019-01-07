@@ -17,11 +17,6 @@ Questions or comments?
 ---
 Join the community Slack channel (#API) at https://kacecommunity.slack.com/
 
-Brief Overview:
----
-Full documentation can be found at the [Wiki](https://gitlab.com/ArtisanByteCrafter/KaceSMA/wikis/home)
-
-
 Wiki
 ---
 * [Home](https://github.com/artvandelay440/KaceSMA/wiki)
