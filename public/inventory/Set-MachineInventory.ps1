@@ -1,9 +1,8 @@
-Function New-Script {
+Function Set-MachineInventory {
     <#
     .DESCRIPTION
-        Creates a new script. The -Body payload parameters determine what type of script is created.
-        Types of script include online/offline kscript and online/offline shell script.
-
+        Updates the inventory information for a device.
+      
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -15,28 +14,17 @@ Function New-Script {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
+    .PARAMETER MachineID
+        The machine whose information you want to update.
+
     .PARAMETER Body
-        A hashtable-formatted payload with parameters for the new script.
+        The payload of the update, in hashtable format.
 
     .INPUTS
 
     .OUTPUTS
         PSCustomObject
 
-    .EXAMPLE
-    $scriptparams = @{
-        'name' = 'xMy New Script'
-        'description' = 'This script is amazing.'
-        'enabled' = $False
-        'status' = 'Draft'
-        'notes'='These are the notes'
-        'scheduleType'='online-kscript'
-        'alertEnabled' = $False
-    }
-        New-SmaScript -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ScriptID 1234 -Body $scriptparams
-
-        Creates a new  script with the given parameters.
-        
     .NOTES
        
     #>
@@ -45,6 +33,10 @@ Function New-Script {
         ConfirmImpact = 'medium'
     )]
     param(
+        [Parameter(Mandatory = $true,Position=0)]
+        [string]
+        $MachineID,
+
         [Parameter(Mandatory = $true)]
         [string]
         $Server,
@@ -61,14 +53,13 @@ Function New-Script {
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
-
     )
     Begin {
-        $Endpoint = "/api/script" # Not Working yet, so not exposed
+        $Endpoint = "/api/inventory/machines/$MachineID/"
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
-            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
+        If ($PSCmdlet.ShouldProcess($Server,"PUT $Endpoint")) {
+            New-ApiPUTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
         }
     }
     End {}

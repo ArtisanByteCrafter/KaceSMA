@@ -1,9 +1,8 @@
-Function New-Script {
+Function New-ServiceDeskTicket {
     <#
     .DESCRIPTION
-        Creates a new script. The -Body payload parameters determine what type of script is created.
-        Types of script include online/offline kscript and online/offline shell script.
-
+        Creates a new SMA service desk ticket.
+      
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -15,34 +14,37 @@ Function New-Script {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER Body
-        A hashtable-formatted payload with parameters for the new script.
 
+    .PARAMETER Body
+        A hashtable-formatted payload containing the ticket information. See example.
+    
     .INPUTS
 
     .OUTPUTS
         PSCustomObject
 
     .EXAMPLE
-    $scriptparams = @{
-        'name' = 'xMy New Script'
-        'description' = 'This script is amazing.'
-        'enabled' = $False
-        'status' = 'Draft'
-        'notes'='These are the notes'
-        'scheduleType'='online-kscript'
-        'alertEnabled' = $False
-    }
-        New-SmaScript -Server https://kace.example.com -Org Default -Credential (Get-Credential) -ScriptID 1234 -Body $scriptparams
+        $NewTicket = @{
+            'Tickets' =@(
+                @{
+                'title'='test-ticket'
+                'hu_queue_id= 1
+                'submitter' = 1234
+                "custom_1" = 'custom field 1 text'
+                }
+            )
+        }
 
-        Creates a new  script with the given parameters.
-        
+        New-SmaTicket -Server https://kace.example.com -Org Default -Credential (Get-Credential) -Body $NewTicket
+
+        Creates a new SMA ticket for a user with ID of 1234
+
     .NOTES
        
     #>
     [cmdletBinding(
         SupportsShouldProcess = $true,
-        ConfirmImpact = 'medium'
+        ConfirmImpact = 'low'
     )]
     param(
         [Parameter(Mandatory = $true)]
@@ -61,10 +63,9 @@ Function New-Script {
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
-
     )
     Begin {
-        $Endpoint = "/api/script" # Not Working yet, so not exposed
+        $Endpoint = '/api/service_desk/tickets'
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
