@@ -1,4 +1,10 @@
 # KaceSMA
+[![](https://img.shields.io/powershellgallery/v/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)](https://www.powershellgallery.com/packages/KaceSMA)
+![](https://img.shields.io/powershellgallery/dt/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)
+[![GitHub issues](https://img.shields.io/github/issues/artvandelay440/KaceSMA.svg?style=flat&colorA=1C8FDB)](https://github.com/artvandelay440/KaceSMA/issues)
+[![](https://img.shields.io/github/last-commit/google/skia.svg?style=flat&colorA=1C8FDB)](https://github.com/artvandelay440/KaceSMA)
+
+![](https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg?style=flat&colorA=1C8FDB)
 ---
 
 A module for interacting with a Quest Kace Systems Management Appliance via Powershell.
