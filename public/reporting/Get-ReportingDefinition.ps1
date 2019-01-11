@@ -30,7 +30,9 @@ Function Get-ReportingDefinition {
         PSCustomObject
 
     .EXAMPLE
-        //todo
+        This will return the reporting definitions for report ID 1234 in ORG 1.
+
+        Get-SmaReportingDefinition -Server https://kace.example.com -Credential (Get-Credential) -DefinitionID 1234 -QueryParameters "?orgID=1"
         
     .EXAMPLE
         //todo
