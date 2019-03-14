@@ -24,11 +24,13 @@ Function Set-AssetAsArchived {
         PSCustomObject
 
     .EXAMPLE
-        
+        $Body = @{
+            archiveReason = "Testing Archival via API"
+        }
 
-        Set-SmaAssetAsArchived -Server https://kace.example.com -Org Default -Credential (Get-Credential) -AssetID 1234
+        Set-SmaAssetAsArchived -Server https://kace.example.com -Org Default -Credential (Get-Credential) -AssetID 1234 -Body $Body
 
-        Archives an asset with ID 1234
+        Archives an asset with ID 1234 with the reason "Testing Archival via API"
 
     .NOTES
        
@@ -50,16 +52,21 @@ Function Set-AssetAsArchived {
         [PSCredential]
         $Credential,
 
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [int]
-        $AssetID
+        $AssetID,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [hashtable]
+        $Body
     )
     Begin {
-        $Endpoint = "/api/asset/assets/$AssetID/archive/"
+        $Endpoint = "/api/asset/assets/$AssetID/archive"
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
-            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
+            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
         }
     }
     End {}
