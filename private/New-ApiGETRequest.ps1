@@ -1,6 +1,7 @@
 Function New-ApiGETRequest {
     param (
         [Parameter(Mandatory = $true)]
+        [ValidateScript({If ($_ -notmatch "^(http|https)://") {Throw 'Must start with "http://" or "https://"'} Else{$true}} )]
         [String]
         $Server,
 

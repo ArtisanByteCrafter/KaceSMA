@@ -1,8 +1,7 @@
-Function Set-AssetAsArchived {
+Function Get-ServiceDeskTicketChanges {
     <#
     .DESCRIPTION
-        Archives an existing SMA asset.
-      
+        Returns a list of all ticket changes to a given ticket.
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
         Example: https://kace.example.com
@@ -14,26 +13,22 @@ Function Set-AssetAsArchived {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
+    .PARAMETER QueryParameters
+        (Optional) Any additional query parameters to be included. String must begin with a <?> character.
 
-    .PARAMETER AssetID
-        The ID of the asset you want to archive.
-    
     .INPUTS
 
     .OUTPUTS
         PSCustomObject
 
     .EXAMPLE
-        $Body = @{
-            archiveReason = "Testing Archival via API"
-        }
 
-        Set-SmaAssetAsArchived -Server https://kace.example.com -Org Default -Credential (Get-Credential) -AssetID 1234 -Body $Body
+        Get-SmaServiceDeskTicketChanges -Server $server -Credential $credentials -ticketID 1234 -QueryParameters $queryparameters
 
-        Archives an asset with ID 1234 with the reason "Testing Archival via API"
+        Retrieves the ticket changes for ticket 1234
 
     .NOTES
-       
+
     #>
     [cmdletBinding(
         SupportsShouldProcess = $true,
@@ -54,19 +49,19 @@ Function Set-AssetAsArchived {
 
         [Parameter(Mandatory = $true)]
         [int]
-        $AssetID,
+        $TicketID,
 
-        [Parameter(Mandatory = $true)]
-        [ValidateNotNullOrEmpty()]
-        [hashtable]
-        $Body
+        [Parameter()]
+        [ValidatePattern("^\?")]
+        [string]
+        $QueryParameters
     )
     Begin {
-        $Endpoint = "/api/asset/assets/$AssetID/archive"
+            $Endpoint = "/api/service_desk/tickets/$TicketID/changes"
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
-            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
+            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
         }
     }
     End {}
