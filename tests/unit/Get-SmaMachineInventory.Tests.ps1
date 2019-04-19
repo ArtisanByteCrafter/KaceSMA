@@ -43,12 +43,12 @@ Describe 'Get-SmaMachineInventory Unit Tests' -Tags 'Unit' {
 
             It "should call generic endpoint if MachineID parameter is not specified" {
                 $Generic = $(Get-SmaMachineInventory @GenericParams -Verbose) 4>&1
-                $Generic  | Should -Be 'Performing the operation "GET /api/inventory/machines/" on target "https://foo".'
+                $Generic  | Should -Be 'Performing the operation "GET /api/inventory/machines" on target "https://foo".'
             }
 
             It "should call MachineID endpoint if MachineID parameter is specified" {
                 $WithMachineID = $(Get-SmaMachineInventory @MachineIDParams -Verbose) 4>&1
-                $WithMachineID  | Should -Be 'Performing the operation "GET /api/inventory/machines/1234/" on target "https://foo".'
+                $WithMachineID  | Should -Be 'Performing the operation "GET /api/inventory/machines/1234" on target "https://foo".'
             }
         }
 
