@@ -34,7 +34,7 @@ Describe 'Get-SmaServiceDeskTicketTemplate Unit Tests' -Tags 'Unit' {
                 }
             }
 
-            It "should call QueueID $($QueueIDParams.QueueID)/changes endpoint" {
+            It "should call QueueID $($QueueIDParams.QueueID)/ticket_template endpoint" {
                 $WithQueueID = $(Get-SmaServiceDeskTicketTemplate @QueueIDParams -Verbose) 4>&1
                 $WithQueueID  | Should -Be 'Performing the operation "GET /api/service_desk/queues/1234/ticket_template" on target "https://foo".'
             }
