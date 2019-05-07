@@ -61,7 +61,7 @@ Describe 'New-SmaAsset Unit Tests' -Tags 'Unit' {
             $NewAgentAsset = @{
                 'Assets' =@(
                     @{
-                    'name'='testAssetFoo'
+                    'name'='testAssetFoo2'
                     "asset_type_id" = 5
                     'location_id' = 7080
                     'asset_type_name' = "Computer with Dell Agent"
