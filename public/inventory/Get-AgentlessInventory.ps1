@@ -65,10 +65,10 @@ Function Get-AgentlessInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/nodes/'
+        $Endpoint = '/api/inventory/nodes'
 
         If ($NodesID) {
-            $Endpoint = "/api/inventory/nodes/$NodesID/"
+            $Endpoint = "/api/inventory/nodes/$NodesID"
         }
     }
     Process {

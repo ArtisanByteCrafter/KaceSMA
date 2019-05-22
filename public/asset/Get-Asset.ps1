@@ -74,9 +74,9 @@ Function Get-Asset {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/asset/assets/'
+        $Endpoint = '/api/asset/assets'
         If ($AssetID) {
-            $Endpoint = "/api/asset/assets/$AssetID/"
+            $Endpoint = "/api/asset/assets/$AssetID"
             If ($AsBarcodes) {
                 $Endpoint = "/api/asset/assets/$AssetID/barcodes"
             }

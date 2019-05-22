@@ -59,10 +59,10 @@ Function Get-UserPermissions {
 
     )
     Begin {
-        $Endpoint = "/api/users/$UserID/permissions/"
+        $Endpoint = "/api/users/$UserID/permissions"
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server)) {
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
         }
     }

@@ -66,9 +66,9 @@ Function Get-SoftwareInventory {
     )
 
     Begin {
-        $Endpoint = '/api/inventory/softwares/'
+        $Endpoint = '/api/inventory/softwares'
         If ($SoftwareID) {
-            $Endpoint = "/api/inventory/softwares/$SoftwareID/"
+            $Endpoint = "/api/inventory/softwares/$SoftwareID"
         }
     }
     Process {

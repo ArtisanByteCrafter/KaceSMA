@@ -61,7 +61,7 @@ Function Set-ServiceDeskTicket {
         $Body
     )
     Begin {
-        $Endpoint = "/api/service_desk/tickets/$TicketID/"
+        $Endpoint = "/api/service_desk/tickets/$TicketID"
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"PUT $Endpoint")) {

@@ -65,9 +65,9 @@ Function Get-OperatingSystemInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/operating_systems/'
+        $Endpoint = '/api/inventory/operating_systems'
         If ($MachineID) {
-            $Endpoint = "/api/inventory/operating_systems/$MachineID/"
+            $Endpoint = "/api/inventory/operating_systems/$MachineID"
         }
     }
     Process {

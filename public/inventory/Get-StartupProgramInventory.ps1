@@ -65,9 +65,9 @@ Function Get-StartupProgramInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/startup_programs/'
+        $Endpoint = '/api/inventory/startup_programs'
         If ($ProgramID) {
-            $Endpoint = "/api/inventory/startup_programs/$ProgramID/"
+            $Endpoint = "/api/inventory/startup_programs/$ProgramID"
         }
     }
     Process {

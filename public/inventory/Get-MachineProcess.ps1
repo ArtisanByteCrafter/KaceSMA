@@ -66,15 +66,18 @@ Function Get-MachineProcess {
     )
 
     Begin {
-        $Endpoint = '/api/inventory/processes/'
+        $Endpoint = '/api/inventory/processes'
         If ($ProcessID) {
-            $Endpoint = "/api/inventory/processes/$ProcessID/"
+            $Endpoint = "/api/inventory/processes/$ProcessID"
         }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
             New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
         }
-        End {}
+        
+    }
+    End {
+
     }
 }

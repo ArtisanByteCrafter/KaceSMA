@@ -64,7 +64,7 @@ Function Get-ServiceDeskQueue {
         $QueryParameters
     )
     Begin {
-        $Endpoint = "/api/service_desk/queues/"
+        $Endpoint = "/api/service_desk/queues"
         If ($QueueID) {
             $Endpoint = "/api/service_desk/queues/$QueueID"
         }

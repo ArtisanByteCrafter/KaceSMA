@@ -45,10 +45,10 @@ Function Get-CurrentUserAccount {
         $Credential
     )
     Begin {
-        $Endpoint = "/api/users/me/"
+        $Endpoint = "/api/users/me"
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server)) {
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
         }
     }

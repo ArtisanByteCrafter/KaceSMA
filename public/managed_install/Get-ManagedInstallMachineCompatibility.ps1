@@ -60,7 +60,7 @@ Function Get-ManagedInstallMachineCompatibility {
         $QueryParameters
     )
     Begin {
-        $Endpoint = "/api/managed_install/machines/$MachineID/"
+        $Endpoint = "/api/managed_install/machines/$MachineID"
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
