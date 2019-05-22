@@ -62,7 +62,7 @@ Function Get-BarcodeAsset {
     Begin {
         $Endpoint = '/api/asset/barcodes'
         If ($BarcodeID) {
-            $Endpoint = "/api/asset/barcodes/$BarcodeID/"
+            $Endpoint = "/api/asset/barcodes/$BarcodeID"
         }
     }
     Process {

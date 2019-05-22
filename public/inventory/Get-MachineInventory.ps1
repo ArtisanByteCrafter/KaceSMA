@@ -65,9 +65,9 @@ Function Get-MachineInventory {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/inventory/machines/'
+        $Endpoint = '/api/inventory/machines'
         If ($MachineID) {
-            $Endpoint = "/api/inventory/machines/$MachineID/"
+            $Endpoint = "/api/inventory/machines/$MachineID"
         }
     }
     Process {

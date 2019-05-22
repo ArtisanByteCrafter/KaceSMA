@@ -75,12 +75,12 @@ Function Get-ReportingDefinition {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/reporting/definitions/'
+        $Endpoint = '/api/reporting/definitions'
         If ($DefinitionID) {
-            $Endpoint = "/api/reporting/definitions/$DefinitionID/"
+            $Endpoint = "/api/reporting/definitions/$DefinitionID"
         }
         If ($DefinitionName) {
-            $Endpoint = "/api/reporting/definitions/$DefinitionName/"
+            $Endpoint = "/api/reporting/definitions/$DefinitionName"
         }
         If ($DistinctField) {
             $Endpoint = "/api/reporting/definitions/$DistinctField"

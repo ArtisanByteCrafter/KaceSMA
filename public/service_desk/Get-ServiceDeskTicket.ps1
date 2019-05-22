@@ -68,7 +68,7 @@ Function Get-ServiceDeskTicket {
         $QueryParameters
     )
     Begin {
-        $Endpoint = "/api/service_desk/tickets/"
+        $Endpoint = "/api/service_desk/tickets"
         If ($TicketID){
             $Endpoint = "/api/service_desk/tickets/$TicketID"
         }

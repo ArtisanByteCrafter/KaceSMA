@@ -55,7 +55,7 @@ Function Set-MachineInventory {
         $Body
     )
     Begin {
-        $Endpoint = "/api/inventory/machines/$MachineID/"
+        $Endpoint = "/api/inventory/machines/$MachineID"
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"PUT $Endpoint")) {

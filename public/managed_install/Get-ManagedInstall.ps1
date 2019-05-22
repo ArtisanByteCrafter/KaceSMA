@@ -77,9 +77,9 @@ Function Get-ManagedInstall {
         $QueryParameters
     )
     Begin {
-        $Endpoint = '/api/managed_install/managed_installs/'
+        $Endpoint = '/api/managed_install/managed_installs'
         If ($ManagedInstallID) {
-            $Endpoint = "/api/managed_install/managed_installs/$ManagedInstallID/"
+            $Endpoint = "/api/managed_install/managed_installs/$ManagedInstallID"
             If ($ListCompatibleMachines) {
                 $Endpoint = "/api/managed_install/managed_installs/$ManagedInstallID/compatible_machines"
             }

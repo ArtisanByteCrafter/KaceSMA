@@ -55,10 +55,10 @@ Function Remove-ServiceDeskTicket {
         $Credential
     )
     Begin {
-        $Endpoint = "/api/service_desk/tickets/$TicketID/"
+        $Endpoint = "/api/service_desk/tickets/$TicketID"
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"PUT $Endpoint")) {
+        If ($PSCmdlet.ShouldProcess($Server,"DELETE $Endpoint")) {
             New-ApiDELETERequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
         }
     }

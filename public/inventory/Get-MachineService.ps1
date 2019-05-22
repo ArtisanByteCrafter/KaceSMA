@@ -66,9 +66,9 @@ Function Get-MachineService {
     )
 
     Begin {
-        $Endpoint = '/api/inventory/services/'
+        $Endpoint = '/api/inventory/services'
         If ($ServiceID) {
-            $Endpoint = "/api/inventory/services/$ServiceID/"
+            $Endpoint = "/api/inventory/services/$ServiceID"
         }
     }
     Process {
