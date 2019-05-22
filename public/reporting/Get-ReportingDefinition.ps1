@@ -42,7 +42,8 @@ Function Get-ReportingDefinition {
     #>
     [cmdletBinding(
         SupportsShouldProcess = $true,
-        ConfirmImpact = 'low'
+        ConfirmImpact = 'low',
+        DefaultParameterSetName = "DefinitionID"
     )]
     param(
         [Parameter(Mandatory = $true)]
