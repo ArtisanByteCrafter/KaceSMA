@@ -35,6 +35,7 @@ $FunctionsToExport = @(
     'Set-ServiceDeskTicket'
     'Remove-ServiceDeskTicket'
     'Get-ServiceDeskTicketChanges'
+    'Set-Asset'
 )
 
 Describe "General Function Tests" {
