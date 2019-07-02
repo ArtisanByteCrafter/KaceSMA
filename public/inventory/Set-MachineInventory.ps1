@@ -59,6 +59,9 @@ Function Set-MachineInventory {
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"PUT $Endpoint")) {
+            Write-Warning "This cmdlet invokes a client-side inventory check.
+        Additional info: https://github.com/ArtisanByteCrafter/KaceSMA/wiki/FAQ#q-set-smamachineinventory-triggers-a-client-side-inventory"
+
             New-ApiPUTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
         }
     }
