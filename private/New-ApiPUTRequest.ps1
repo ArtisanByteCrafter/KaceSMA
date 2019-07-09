@@ -36,20 +36,41 @@ Function New-ApiPUTRequest {
 
     $Uri = "$Server/ams/shared/api/security/login"
     $session = new-object microsoft.powershell.commands.webrequestsession
-    $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+
+    $Headers = @{}
     $headers.Add('Accept', 'application/json')
     $headers.Add('Content-Type', 'application/json')
     $headers.Add('x-dell-api-version', '8')
-    $Request = Invoke-WebRequest -Uri $Uri -Headers $headers -Body $Auth -Method POST -WebSession $session -UseBasicParsing
-    $CSRFToken = $request.Headers.'x-dell-csrf-token'
-    $headers.Add("x-dell-csrf-token", "$CSRFToken")
-    $APIUrl = ("$Server" + "$Endpoint")
+
+    $RequestSplat = @{
+        Uri             = $Uri
+        Headers         = $Headers
+        Body            = $Auth
+        Method          = 'POST'
+        WebSession      = $Session
+        UseBasicParsing = $True
+    }
+    $Request = Invoke-WebRequest @RequestSplat
+
+    $CSRFToken = $Request.Headers.'x-dell-csrf-token'
+    $Headers.Add("x-dell-csrf-token", "$CSRFToken")
+
+    $APIUrl = "{0}{1}" -f $Server,$Endpoint
 
 
-    If ($Body) {
-        Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method PUT -WebSession $session -UseBasicParsing -Body ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
-    } else {
-        Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method PUT -WebSession $session -UseBasicParsing
+    If (!($Body)) {
+        $IRMSplat = @{
+            Uri = $APIUrl
+            Headers = $Headers
+            Method = 'PUT'
+            WebSession = $session
+            UseBasicParsing = $true
+        }
+        Invoke-RestMethod @IRMSplat 
+    }
+    Else {
+        $IRMParams['Body'] = ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
+        Invoke-RestMethod @IRMSplat
     }
 
     # Be nice and set session security protocols back to how we found them.
