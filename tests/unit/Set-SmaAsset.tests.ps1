@@ -63,6 +63,15 @@ Describe 'Set-SmaAsset Unit Tests' -Tags 'Unit' {
 
             It 'should produce [PSCustomObject] output' {
 
+                $SetAssetBody = @{
+                    'Assets' = @(
+                        @{
+                            'id'          = 7563
+                            'field_10149' = 'nwtest2'
+                        }
+                    )
+                }
+
                 $AssetIDParams = @{
                     Server = 'https://foo'
                     Credential = $MockCred
