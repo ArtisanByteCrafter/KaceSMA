@@ -36,11 +36,11 @@ Describe 'Get-SmaReportingDefinition Unit Tests' -Tags 'Unit' {
                 QueryParameters = "?orgID=1"
             }
 
-            $DefinitionFieldParams = @{
+            $DistinctFieldParams = @{
                 Server = 'https://foo'
                 Credential = $MockCred
                 Org = 'Default'
-                DefinitionField = 'foofield'
+                DistinctField = 'foofield'
                 QueryParameters = "?orgID=1"
             }
 
@@ -72,9 +72,9 @@ Describe 'Get-SmaReportingDefinition Unit Tests' -Tags 'Unit' {
                 $WithDefinitionName  | Should -Be 'Performing the operation "GET /api/reporting/definitions/fooname" on target "https://foo".'
             }
 
-            It "should call DefinitionField endpoint if DefinitionField parameter is specified" {
-                $WithDefinitionField = $(Get-SmaReportingDefinition @DefinitionFieldParams -Verbose) 4>&1
-                $WithDefinitionField  | Should -Be 'Performing the operation "GET /api/reporting/definitions/foofield" on target "https://foo".'
+            It "should call DistinctField endpoint if DistinctField parameter is specified" {
+                $WithDistinctField = $(Get-SmaReportingDefinition @DistinctFieldParams -Verbose) 4>&1
+                $WithDistinctField  | Should -Be 'Performing the operation "GET /api/reporting/definitions/foofield" on target "https://foo".'
             }
         }
 

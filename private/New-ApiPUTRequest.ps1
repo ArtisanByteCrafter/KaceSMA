@@ -1,19 +1,23 @@
 Function New-ApiPUTRequest {
     param (
-        [Parameter(Mandatory = $true)]
-        [ValidateScript({If ($_ -notmatch "^(http|https)://") {Throw 'Must start with "http://" or "https://"'} Else{$true}} )]
+        [Parameter(Mandatory)]
+        [ValidateScript({
+            If ($_ -notmatch "^(http|https)://") {
+                Throw 'Must start with "http://" or "https://"'
+        } Else{ $true }}
+        )]
         [String]
         $Server,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [String]
         $Org,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [String]
         $Endpoint,
 
-        [Parameter(Mandatory = $True)]
+        [Parameter(Mandatory)]
         [PSCredential]
         $Credential,
 
@@ -28,22 +32,51 @@ Function New-ApiPUTRequest {
     } | ConvertTo-Json
 
 
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    # Dynamically find and include all available protocols 'Tls12' or higher.
+    # Module requires PS 5.1+ so no error checking should be required.
+
+    $CurrentVersionTls = [Net.ServicePointManager]::SecurityProtocol
+    Set-ClientTlsProtocols -ErrorAction Stop
+
     $Uri = "$Server/ams/shared/api/security/login"
     $session = new-object microsoft.powershell.commands.webrequestsession
-    $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+
+    $Headers = @{}
     $headers.Add('Accept', 'application/json')
     $headers.Add('Content-Type', 'application/json')
     $headers.Add('x-dell-api-version', '8')
-    $Request = Invoke-WebRequest -Uri $Uri -Headers $headers -Body $Auth -Method POST -WebSession $session -UseBasicParsing
-    $CSRFToken = $request.Headers.'x-dell-csrf-token'
-    $headers.Add("x-dell-csrf-token", "$CSRFToken")
-    $APIUrl = ("$Server" + "$Endpoint")
 
-
-    If ($Body) {
-        Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method PUT -WebSession $session -UseBasicParsing -Body ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
-    } else {
-        Invoke-RestMethod -Uri $APIUrl -Headers $headers -Method PUT -WebSession $session -UseBasicParsing
+    $RequestSplat = @{
+        Uri             = $Uri
+        Headers         = $Headers
+        Body            = $Auth
+        Method          = 'POST'
+        WebSession      = $Session
+        UseBasicParsing = $True
     }
+    $Request = Invoke-WebRequest @RequestSplat
+
+    $CSRFToken = $Request.Headers.'x-dell-csrf-token'
+    $Headers.Add("x-dell-csrf-token", "$CSRFToken")
+
+    $APIUrl = "{0}{1}" -f $Server,$Endpoint
+
+
+    If (!($Body)) {
+        $IRMSplat = @{
+            Uri = $APIUrl
+            Headers = $Headers
+            Method = 'PUT'
+            WebSession = $session
+            UseBasicParsing = $true
+        }
+        Invoke-RestMethod @IRMSplat 
+    }
+    Else {
+        $IRMSplat['Body'] = ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
+        Invoke-RestMethod @IRMSplat
+    }
+
+    # Be nice and set session security protocols back to how we found them.
+    [Net.ServicePointManager]::SecurityProtocol = $currentVersionTls
 }

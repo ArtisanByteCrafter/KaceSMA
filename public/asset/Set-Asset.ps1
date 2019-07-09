@@ -1,7 +1,7 @@
-Function Set-MachineInventory {
+Function Set-Asset {
     <#
     .DESCRIPTION
-        Updates the inventory information for a device.
+        Updates an SMA asset.
       
     .PARAMETER Server
         The fully qualified name (FQDN) of the SMA Appliance.
@@ -14,16 +14,29 @@ Function Set-MachineInventory {
         A credential for the kace appliance that has permissions to interact with the API.
         To run interactively, use -Credential (Get-Credential)
 
-    .PARAMETER MachineID
-        The machine whose information you want to update.
 
     .PARAMETER Body
-        The payload of the update, in hashtable format.
-
+        A hashtable-formatted payload containing the asset information. See example.
+    
     .INPUTS
 
     .OUTPUTS
         PSCustomObject
+
+    .EXAMPLE
+        $SetAssetBody = @{
+            'Assets' = @(
+                @{
+                    'id'          = 1234
+                    'field_10000' = 'My String'
+                }
+            )
+        }
+
+        Set-SmaAsset -Server https://kace.example.com -Org Default -Credential (Get-Credential) -Body $SetAssetBody
+
+        Updates the field 'field_10000' with string 'My String' on asset with ID 1234. Get
+        asset field identities using Get-SmaAsset on a similar asset if needed.
 
     .NOTES
        
@@ -33,10 +46,6 @@ Function Set-MachineInventory {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory = $true,Position=0)]
-        [string]
-        $MachineID,
-
         [Parameter(Mandatory = $true)]
         [string]
         $Server,
@@ -50,19 +59,28 @@ Function Set-MachineInventory {
         $Credential,
 
         [Parameter(Mandatory = $true)]
+        [int]
+        $AssetID,
+
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
     )
     Begin {
-        $Endpoint = "/api/inventory/machines/$MachineID"
+        $Endpoint = "/api/asset/assets/$AssetID"
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"PUT $Endpoint")) {
-            Write-Warning "This cmdlet invokes a client-side inventory check.
-        Additional info: https://github.com/ArtisanByteCrafter/KaceSMA/wiki/FAQ#q-set-smamachineinventory-triggers-a-client-side-inventory"
 
-            New-ApiPUTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
+            $InvokeParams = @{
+                Server = $Server
+                Endpoint = $Endpoint
+                Org = $Org
+                Credential = $Credential
+                Body = $Body
+            }
+            New-ApiPUTRequest @InvokeParams
         }
     }
     End {}
