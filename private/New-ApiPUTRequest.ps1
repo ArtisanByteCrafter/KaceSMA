@@ -1,7 +1,11 @@
 Function New-ApiPUTRequest {
     param (
         [Parameter(Mandatory)]
-        [ValidateScript({If ($_ -notmatch "^(http|https)://") {Throw 'Must start with "http://" or "https://"'} Else{$true}} )]
+        [ValidateScript({
+            If ($_ -notmatch "^(http|https)://") {
+                Throw 'Must start with "http://" or "https://"'
+        } Else{ $true }}
+        )]
         [String]
         $Server,
 
