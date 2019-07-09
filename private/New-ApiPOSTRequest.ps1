@@ -79,7 +79,7 @@ Function New-ApiPOSTRequest {
         Invoke-RestMethod @IRMSplat 
     }
     Else {
-        $IRMParams['Body'] = ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
+        $IRMSplat['Body'] = ($Body | ConvertTo-Json -Compress -Depth 100 -ErrorAction Stop)
         Invoke-RestMethod @IRMSplat
     }
 
