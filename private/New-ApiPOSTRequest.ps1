@@ -68,14 +68,15 @@ Function New-ApiPOSTRequest {
     }
     Else { $APIUrl = "{0}{1}" -f $Server,$Endpoint }
 
+    $IRMSplat = @{
+        Uri = $APIUrl
+        Headers = $Headers
+        Method = 'PUT'
+        WebSession = $session
+        UseBasicParsing = $true
+    }
+
     If (!($Body)) {
-        $IRMSplat = @{
-            Uri = $APIUrl
-            Headers = $Headers
-            Method = 'POST'
-            WebSession = $session
-            UseBasicParsing = $true
-        }
         Invoke-RestMethod @IRMSplat 
     }
     Else {
