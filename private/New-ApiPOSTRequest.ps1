@@ -71,7 +71,7 @@ Function New-ApiPOSTRequest {
     $IRMSplat = @{
         Uri = $APIUrl
         Headers = $Headers
-        Method = 'PUT'
+        Method = 'POST'
         WebSession = $session
         UseBasicParsing = $true
     }
