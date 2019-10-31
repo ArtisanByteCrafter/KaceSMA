@@ -45,19 +45,7 @@ Function New-Script {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
@@ -67,9 +55,13 @@ Function New-Script {
         $Endpoint = "/api/script" # Not Working yet, so not exposed
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
-            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
+        If ($PSCmdlet.ShouldProcess($Server, "POST $Endpoint")) {
+            $newApiPOSTRequestSplat = @{
+                Body     = $Body
+                Endpoint = $Endpoint
+            }
+            New-ApiPOSTRequest @newApiPOSTRequestSplat
         }
     }
-    End {}
+    End { }
 }
