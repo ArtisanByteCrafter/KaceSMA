@@ -1,5 +1,5 @@
 Function Get-BarcodeAsset {
-     <#
+    <#
     .DESCRIPTION
         Returns information about an SMA barcode.
       
@@ -38,18 +38,6 @@ Function Get-BarcodeAsset {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
         [Parameter()]
         [int]
         $BarcodeID,
@@ -62,13 +50,17 @@ Function Get-BarcodeAsset {
     Begin {
         $Endpoint = '/api/asset/barcodes'
         If ($BarcodeID) {
-            $Endpoint = "/api/asset/barcodes/$BarcodeID"
+            $Endpoint = "/api/asset/barcodes/{0}" -f $BarcodeID
         }
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End { }
 }
