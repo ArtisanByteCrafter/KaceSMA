@@ -43,18 +43,6 @@ Function Get-StartupProgramInventory {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
         [Parameter()]
         [string]
         $ProgramID,
@@ -67,12 +55,16 @@ Function Get-StartupProgramInventory {
     Begin {
         $Endpoint = '/api/inventory/startup_programs'
         If ($ProgramID) {
-            $Endpoint = "/api/inventory/startup_programs/$ProgramID"
+            $Endpoint = "/api/inventory/startup_programs/{0}" -f $ProgramID
         }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
     End {}

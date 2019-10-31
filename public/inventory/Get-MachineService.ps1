@@ -43,18 +43,6 @@ Function Get-MachineService {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
         [Parameter()]
         [string]
         $ServiceID,
@@ -68,12 +56,16 @@ Function Get-MachineService {
     Begin {
         $Endpoint = '/api/inventory/services'
         If ($ServiceID) {
-            $Endpoint = "/api/inventory/services/$ServiceID"
+            $Endpoint = "/api/inventory/services/{0}" -f $ServiceID
         }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
     End {}

@@ -56,7 +56,7 @@ Function Get-MachineInventory {
     Begin {
         $Endpoint = '/api/inventory/machines'
         If ($MachineID) {
-            $Endpoint = "/api/inventory/machines/$MachineID"
+            $Endpoint = "/api/inventory/machines/{0}" -f $MachineID
         }
     }
     Process {

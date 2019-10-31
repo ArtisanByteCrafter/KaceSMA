@@ -43,18 +43,6 @@ Function Get-SoftwareInventory {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
         [Parameter()]
         [string]
         $SoftwareID,
@@ -68,12 +56,16 @@ Function Get-SoftwareInventory {
     Begin {
         $Endpoint = '/api/inventory/softwares'
         If ($SoftwareID) {
-            $Endpoint = "/api/inventory/softwares/$SoftwareID"
+            $Endpoint = "/api/inventory/softwares/{0}" -f $SoftwareID
         }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
     End {}
