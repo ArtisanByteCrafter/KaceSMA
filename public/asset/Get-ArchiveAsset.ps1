@@ -35,19 +35,7 @@ Function Get-ArchiveAsset {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter()]
+        [Parameter(Mandatory)]
         [int]
         $AssetID,
 
@@ -57,12 +45,16 @@ Function Get-ArchiveAsset {
         $QueryParameters
     )
     Begin {
-        $Endpoint = "/api/asset/archived_devices/$AssetID"
+        $Endpoint = "/api/asset/archived_devices/{0}" -f $AssetID
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End { }
 }
