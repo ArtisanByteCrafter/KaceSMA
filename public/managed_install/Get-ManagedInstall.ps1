@@ -51,18 +51,6 @@ Function Get-ManagedInstall {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
         [Parameter()]
         [int]
         $ManagedInstallID,
@@ -79,16 +67,20 @@ Function Get-ManagedInstall {
     Begin {
         $Endpoint = '/api/managed_install/managed_installs'
         If ($ManagedInstallID) {
-            $Endpoint = "/api/managed_install/managed_installs/$ManagedInstallID"
+            $Endpoint = "/api/managed_install/managed_installs/{0}" -f $ManagedInstallID
             If ($ListCompatibleMachines) {
-                $Endpoint = "/api/managed_install/managed_installs/$ManagedInstallID/compatible_machines"
+                $Endpoint = "/api/managed_install/managed_installs/{0}/compatible_machines" -f $ManagedInstallID
             }
         }
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End { }
 }

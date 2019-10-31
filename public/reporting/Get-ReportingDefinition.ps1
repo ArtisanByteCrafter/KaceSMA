@@ -46,27 +46,15 @@ Function Get-ReportingDefinition {
         DefaultParameterSetName = "DefinitionID"
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(ParameterSetName='A')]
+        [Parameter(ParameterSetName = 'A')]
         [int]
         $DefinitionID,
 
-        [Parameter(ParameterSetName='B')]
+        [Parameter(ParameterSetName = 'B')]
         [string]
         $DefinitionName,
 
-        [Parameter(ParameterSetName='C')]
+        [Parameter(ParameterSetName = 'C')]
         [string]
         $DistinctField,
 
@@ -78,19 +66,23 @@ Function Get-ReportingDefinition {
     Begin {
         $Endpoint = '/api/reporting/definitions'
         If ($DefinitionID) {
-            $Endpoint = "/api/reporting/definitions/$DefinitionID"
+            $Endpoint = "/api/reporting/definitions/{0}" -f $DefinitionID
         }
         If ($DefinitionName) {
-            $Endpoint = "/api/reporting/definitions/$DefinitionName"
+            $Endpoint = "/api/reporting/definitions/{0}" -f $DefinitionName
         }
         If ($DistinctField) {
-            $Endpoint = "/api/reporting/definitions/$DistinctField"
+            $Endpoint = "/api/reporting/definitions/{0}" -f $DistinctField
         }
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End { }
 }
