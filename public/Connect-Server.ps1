@@ -52,9 +52,23 @@ Function Connect-Server {
             Method          = 'POST'
             WebSession      = $script:Session
             UseBasicParsing = $True
+            ErrorAction     = 'Stop'
+            TimeoutSec      = 15
         }
-        $Request = Invoke-WebRequest @RequestSplat
+        Try {
+            $Request = Invoke-WebRequest @RequestSplat
+        }
+        Catch {
 
+            $writeErrorSplat = @{
+                Message  = "Could not authenticate to '$server' in org '$org'. Ensure credentials are correct."
+                Category = 'AuthenticationError'
+            }
+            Write-Error @writeErrorSplat
+
+            break;
+        }
+        
         $script:CSRFToken = $Request.Headers.'x-dell-csrf-token'
         $script:Headers.Add("x-dell-csrf-token", "$script:CSRFToken")
 
@@ -67,7 +81,7 @@ Function Connect-Server {
             } | Format-List
         }
         Else {
-            Throw "A connection to '$script:Server' could not be established."
+            Write-Error "A token from '$Server' could not be retrieved."
         }
     }
     End {
