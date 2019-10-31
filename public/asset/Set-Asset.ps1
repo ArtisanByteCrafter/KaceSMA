@@ -37,6 +37,8 @@ Function Set-Asset {
 
         Updates the field 'field_10000' with string 'My String' on asset with ID 1234. Get
         asset field identities using Get-SmaAsset on a similar asset if needed.
+        
+        (Get-SmaAsset -AssetID 1234 -QueryParameters "?shaping=asset all").Assets
 
     .NOTES
        
@@ -46,42 +48,28 @@ Function Set-Asset {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
 
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [int]
         $AssetID,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
     )
     Begin {
-        $Endpoint = "/api/asset/assets/$AssetID"
+        $Endpoint = "/api/asset/assets/{0}" -f $AssetID
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"PUT $Endpoint")) {
+        If ($PSCmdlet.ShouldProcess($Server, "PUT $Endpoint")) {
 
-            $InvokeParams = @{
-                Server = $Server
-                Endpoint = $Endpoint
-                Org = $Org
-                Credential = $Credential
-                Body = $Body
+            $InvokeParams = @{             
+                Endpoint   = $Endpoint
+                Body       = $Body
             }
             New-ApiPUTRequest @InvokeParams
         }
     }
-    End {}
+    End { }
 }

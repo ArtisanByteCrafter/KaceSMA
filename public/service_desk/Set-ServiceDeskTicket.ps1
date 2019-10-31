@@ -39,34 +39,26 @@ Function Set-ServiceDeskTicket {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory = $true,Position=0)]
+        [Parameter(Mandatory, Position = 0)]
         [string]
         $TicketID,
 
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
     )
     Begin {
-        $Endpoint = "/api/service_desk/tickets/$TicketID"
+        $Endpoint = "/api/service_desk/tickets/{0}" -f $TicketID
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"PUT $Endpoint")) {
-            New-ApiPUTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
+        If ($PSCmdlet.ShouldProcess($Server, "PUT $Endpoint")) {
+            $newApiPUTRequestSplat = @{
+                Body     = $Body
+                Endpoint = $Endpoint
+            }
+            New-ApiPUTRequest @newApiPUTRequestSplat
         }
     }
-    End {}
+    End { }
 }
