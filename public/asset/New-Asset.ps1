@@ -47,19 +47,8 @@ Function New-Asset {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
 
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory, Position = 0)]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
@@ -68,9 +57,13 @@ Function New-Asset {
         $Endpoint = '/api/asset/assets'
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
-            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
+        If ($PSCmdlet.ShouldProcess($Server, "POST $Endpoint")) {
+            $newApiPOSTRequestSplat = @{
+                Body     = $Body
+                Endpoint = $Endpoint
+            }
+            New-ApiPOSTRequest @newApiPOSTRequestSplat
         }
     }
-    End {}
+    End { }
 }

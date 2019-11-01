@@ -52,35 +52,27 @@ Function New-ScriptTask {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [int]
         $ScriptID,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
 
     )
     Begin {
-        $Endpoint = "/api/script/$ScriptID/task"
+        $Endpoint = "/api/script/{0}/task" -f $ScriptID
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
-            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -Body $Body
+        If ($PSCmdlet.ShouldProcess($Server, "POST $Endpoint")) {
+            $newApiPOSTRequestSplat = @{
+                Body     = $Body
+                Endpoint = $Endpoint
+            }
+            New-ApiPOSTRequest  @newApiPOSTRequestSplat
         }
     }
-    End {}
+    End { }
 }

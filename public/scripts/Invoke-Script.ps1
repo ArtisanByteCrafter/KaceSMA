@@ -42,36 +42,29 @@ Function Invoke-Script {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [int]
         $ScriptID,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [array]
-        $TargetMachineIDs
+        $TargetMachineID
 
     )
     Begin {
-        $Endpoint = "/api/script/$ScriptID/actions/run"
+        $Endpoint = "/api/script/{0}/actions/run" -f $ScriptID
+        $Machines = $TargetMachineID -join ','
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"POST $Endpoint")) {
-            $Machines = $TargetMachineIDs -join ','
-            New-ApiPOSTRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential -QueryParameters "?machineIDs=$Machines"
+        If ($PSCmdlet.ShouldProcess($Server, "POST $Endpoint")) {
+            
+            $newApiPOSTRequestSplat = @{
+                QueryParameters = "?machineIDs=$Machines"
+                Endpoint        = $Endpoint
+            }
+            New-ApiPOSTRequest @newApiPOSTRequestSplat
         }
     }
-    End {}
+    End { }
 }
