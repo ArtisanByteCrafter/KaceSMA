@@ -31,7 +31,7 @@ Function New-ServiceDeskTicket {
                 'hd_queue_id' = 7
                 'submitter' = 14038
                 'category' = 579
-                "custom_1"    = '731-661-5657'
+                "custom_1"    = 'my custom'
                 }
             )
         }

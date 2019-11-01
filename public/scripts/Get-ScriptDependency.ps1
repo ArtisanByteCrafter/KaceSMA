@@ -37,19 +37,7 @@ Function Get-ScriptDependency {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [int]
         $ScriptID,
 
@@ -58,16 +46,16 @@ Function Get-ScriptDependency {
         $DependencyName
     )
     Begin {
-        $Endpoint = "/api/script/$ScriptID/dependencies"
+        $Endpoint = "/api/script/{0}/dependencies" -f $ScriptID
         If ($DependencyName) {
-            $Endpoint = "/api/script/$ScriptID/dependency/$DependencyName"
+            $Endpoint = "/api/script/{0}/dependency/{1}" -f $ScriptID, $DependencyName
         }
 
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
+            New-ApiGETRequest -Endpoint $Endpoint
         }
     }
-    End {}
+    End { }
 }

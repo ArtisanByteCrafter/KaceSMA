@@ -35,30 +35,18 @@ Function Get-ScriptRunStatus {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [int]
         $RunID
     )
     Begin {
-        $Endpoint = "/api/script/runStatus/$RunID"
+        $Endpoint = "/api/script/runStatus/{0}" -f $RunID
 
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -Credential $Credential
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
+            New-ApiGETRequest -Endpoint $Endpoint
         }
     }
-    End {}
+    End { }
 }

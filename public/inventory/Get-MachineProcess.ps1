@@ -60,10 +60,10 @@ Function Get-MachineProcess {
         }
     }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
-                Endpoint = $Endpoint
+                Endpoint        = $Endpoint
             }
             New-ApiGETRequest @newApiGETRequestSplat
         }

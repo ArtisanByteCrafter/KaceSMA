@@ -42,18 +42,6 @@ Function Get-Script {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
         [Parameter()]
         [int]
         $ScriptID,
@@ -66,13 +54,17 @@ Function Get-Script {
     Begin {
         $Endpoint = "/api/scripts"
         If ($ScriptID) {
-            $Endpoint = "/api/script/$ScriptID"
+            $Endpoint = "/api/script/{0}" -f $ScriptID
         }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End { }
 }

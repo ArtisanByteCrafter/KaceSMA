@@ -65,7 +65,7 @@ Function Get-ServiceDeskTicket {
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
-                Endpoint = $Endpoint
+                Endpoint        = $Endpoint
             }
             New-ApiGETRequest @newApiGETRequestSplat
         }

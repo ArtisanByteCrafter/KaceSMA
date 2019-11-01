@@ -45,7 +45,11 @@ Function Get-AssetType {
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
-            New-ApiGETRequest -Endpoint $Endpoint -QueryParameters $QueryParameters
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
     End { }
