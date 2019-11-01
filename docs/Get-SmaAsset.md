@@ -44,21 +44,6 @@ Retrieves barcode information about an asset with ID 5678.
 
 ## PARAMETERS
 
-### -AssetID
-Specifies the asset to return from the SMA.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -AsBarcodes
 Will return all barcodes associated with the requested assets. Can be used either with `-AssetID` parameter or with all assets.
 
@@ -74,6 +59,36 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -AssetID
+Specifies the asset to return from the SMA.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 0
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -QueryParameters
 Any additional query parameters to be included.
 String must begin with a '?' character.
@@ -84,7 +99,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -98,21 +113,6 @@ The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
 
 Required: False
 Position: Named
