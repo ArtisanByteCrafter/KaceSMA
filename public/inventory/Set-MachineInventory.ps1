@@ -1,33 +1,4 @@
 Function Set-MachineInventory {
-    <#
-    .DESCRIPTION
-        Updates the inventory information for a device.
-      
-    .PARAMETER Server
-        The fully qualified name (FQDN) of the SMA Appliance.
-        Example: https://kace.example.com
-
-    .PARAMETER Org
-        The SMA Organization you want to retrieve information from. If not provided, 'Default' is used.
-    
-    .PARAMETER Credential
-        A credential for the kace appliance that has permissions to interact with the API.
-        To run interactively, use -Credential (Get-Credential)
-
-    .PARAMETER MachineID
-        The machine whose information you want to update.
-
-    .PARAMETER Body
-        The payload of the update, in hashtable format.
-
-    .INPUTS
-
-    .OUTPUTS
-        PSCustomObject
-
-    .NOTES
-       
-    #>
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'medium'

@@ -75,10 +75,12 @@ Function Connect-Server {
         # If we received a token, we're authenticated
         If ($script:CSRFToken) {
             [PSCustomObject]@{
-                Server = $script:Server
-                Status = 'Connected'
-                Token  = $script:CSRFToken
-            } | Format-List
+                Server   = $script:Server -replace 'https://', ''
+                Org      = $Org
+                Status   = 'Connected'
+                Protocol = if ($Server -match "^(https)://") { 'HTTPS' }else { 'HTTP' }
+                User     = $Credential.username
+            }
         }
         Else {
             Write-Error "A token from '$Server' could not be retrieved."
