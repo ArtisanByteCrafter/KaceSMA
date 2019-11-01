@@ -8,13 +8,13 @@ Function New-ApiDELETERequest {
     $CurrentVersionTls = [Net.ServicePointManager]::SecurityProtocol
     Set-ClientTlsProtocols -ErrorAction Stop
 
-    $APIUrl = "{0}{1}" -f $script:Server,$Endpoint
+    $APIUrl = "{0}{1}" -f $script:Server, $Endpoint
 
     $IRMSplat = @{
-        Uri = $APIUrl
-        Headers = $script:Headers
-        Method = 'DELETE'
-        WebSession = $script:Session
+        Uri             = $APIUrl
+        Headers         = $script:Headers
+        Method          = 'DELETE'
+        WebSession      = $script:Session
         UseBasicParsing = $true
     }
     Invoke-RestMethod @IRMSplat 
