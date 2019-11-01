@@ -36,21 +36,9 @@ Function Get-UserPermissions {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [string]
         $UserID,
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -59,12 +47,16 @@ Function Get-UserPermissions {
 
     )
     Begin {
-        $Endpoint = "/api/users/$UserID/permissions"
+        $Endpoint = "/api/users/{0}/permissions" -f $UserID
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End { }
 }

@@ -42,18 +42,6 @@ Function Get-ServiceDeskQueue {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
         [Parameter()]
         [int]
         $QueueID,
@@ -66,13 +54,17 @@ Function Get-ServiceDeskQueue {
     Begin {
         $Endpoint = "/api/service_desk/queues"
         If ($QueueID) {
-            $Endpoint = "/api/service_desk/queues/$QueueID"
+            $Endpoint = "/api/service_desk/queues/{0}" -f $QueueID
         }
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End { }
 }

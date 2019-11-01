@@ -35,19 +35,7 @@ Function Get-ServiceDeskTicketChanges {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [int]
         $TicketID,
 
@@ -57,12 +45,16 @@ Function Get-ServiceDeskTicketChanges {
         $QueryParameters
     )
     Begin {
-            $Endpoint = "/api/service_desk/tickets/$TicketID/changes"
+        $Endpoint = "/api/service_desk/tickets/{0}/changes" -f $TicketID
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End { }
 }

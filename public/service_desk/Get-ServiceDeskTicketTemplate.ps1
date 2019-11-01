@@ -38,19 +38,7 @@ Function Get-ServiceDeskTicketTemplate {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [int]
         $QueueID,
 
@@ -60,13 +48,17 @@ Function Get-ServiceDeskTicketTemplate {
         $QueryParameters
     )
     Begin {
-        $Endpoint = "/api/service_desk/queues/$QueueID/ticket_template"
+        $Endpoint = "/api/service_desk/queues/{0}/ticket_template" -f $QueueID
         
     }
     Process {
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End { }
 }
