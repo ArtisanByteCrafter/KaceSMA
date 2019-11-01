@@ -100,8 +100,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### Int32
 
 ## NOTES
-### output 0=Failure
+output 0=Failure
 
-### output non-0 = the given runNow ID
+output non-0 = the given runNow ID
 
 ## RELATED LINKS

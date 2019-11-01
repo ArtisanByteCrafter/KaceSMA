@@ -7,11 +7,12 @@ schema: 2.0.0
 
 # Get-SmaScript
 
+## SYNOPSIS
+
 ## SYNTAX
 
 ```
-Get-SmaScript [-Server] <String> [[-Org] <String>] [-Credential] <PSCredential> [[-ScriptID] <Int32>]
- [[-QueryParameters] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-SmaScript [[-ScriptID] <Int32>] [[-QueryParameters] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -44,7 +45,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: 1
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -60,7 +61,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

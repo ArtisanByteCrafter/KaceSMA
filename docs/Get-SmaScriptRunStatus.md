@@ -7,11 +7,12 @@ schema: 2.0.0
 
 # Get-SmaScriptRunStatus
 
+## SYNOPSIS
+
 ## SYNTAX
 
 ```
-Get-SmaScriptRunStatus [-Server] <String> [[-Org] <String>] [-Credential] <PSCredential> [-RunID] <Int32>
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-SmaScriptRunStatus [-RunID] <Int32> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -38,7 +39,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 4
+Position: 1
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False

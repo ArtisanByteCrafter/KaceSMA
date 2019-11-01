@@ -7,6 +7,8 @@ schema: 2.0.0
 
 # Get-SmaServiceDeskQueue
 
+## SYNOPSIS
+
 ## SYNTAX
 
 ```

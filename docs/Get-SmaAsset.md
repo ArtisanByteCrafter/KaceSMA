@@ -7,6 +7,8 @@ schema: 2.0.0
 
 # Get-SmaAsset
 
+## SYNOPSIS
+
 ## SYNTAX
 
 ```
@@ -32,6 +34,7 @@ Get-SmaAsset -AssetID 5678
 ```
 
 Retrieves information about an asset with ID 5678.
+
 ### EXAMPLE 3
 ```
 Get-SmaAsset -AssetID 5678 -AsBarcodes

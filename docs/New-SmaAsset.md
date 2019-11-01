@@ -35,6 +35,7 @@ PS> $NewAgentAsset = @{
 
 PS> New-SmaAsset -Body $NewAgentAsset
 ```
+
 Creates a new SMA asset or type 'Computer with Dell Agent'.
 
 ## PARAMETERS

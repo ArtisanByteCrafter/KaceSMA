@@ -7,6 +7,8 @@ schema: 2.0.0
 
 # Get-SmaMachineService
 
+## SYNOPSIS
+
 ## SYNTAX
 
 ```

@@ -39,6 +39,7 @@ $taskparams = @{
 
 New-SmaScriptTask -ScriptID 1234 -Body $taskparams
 ```
+
 Creates a new task for script ID 1234, gives it 2 attempts with a break on failure.
 On remediation failure, it logs a status message.
 

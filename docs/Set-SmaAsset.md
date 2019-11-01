@@ -7,6 +7,8 @@ schema: 2.0.0
 
 # Set-SmaAsset
 
+## SYNOPSIS
+
 ## SYNTAX
 
 ```
@@ -31,8 +33,8 @@ PS> $SetAssetBody = @{
 
 PS> Set-SmaAsset -Body $SetAssetBody
 ```
-Updates the field 'field_10000' with string 'My String' on asset with ID 1234. Get asset field identities using Get-SmaAsset with query parameters `"?shaping=asset all"` on a similar asset if needed.
 
+Updates the field 'field_10000' with string 'My String' on asset with ID 1234. Get asset field identities using Get-SmaAsset with query parameters `"?shaping=asset all"` on a similar asset if needed.
 
 ## PARAMETERS
 

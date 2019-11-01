@@ -7,6 +7,8 @@ schema: 2.0.0
 
 # Get-SmaServiceDeskQueueField
 
+## SYNOPSIS
+
 ## SYNTAX
 
 ```
@@ -36,7 +38,7 @@ Type: Int32
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 1
 Default value: 0
 Accept pipeline input: False

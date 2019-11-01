@@ -30,6 +30,7 @@ PS> $Body = @{
 
 PS> Set-SmaAssetAsArchived -AssetID 1234 -Body $Body
 ```
+
 Archives an asset with ID 1234 with the reason "Testing Archival via API"
 
 ## PARAMETERS

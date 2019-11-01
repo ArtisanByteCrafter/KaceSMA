@@ -7,6 +7,8 @@ schema: 2.0.0
 
 # Get-SmaServiceDeskTicket
 
+## SYNOPSIS
+
 ## SYNTAX
 
 ```
@@ -32,6 +34,7 @@ Retrieves all tickets with a status of `new`
 ```powershell
 Get-SmaServiceDeskTicket -TicketID 1234 -QueryParameters "?shaping= hd_ticket regular,owner limited,submitter limited"
 ```
+
 Retrieves the standard attributes, plus owner and submitter for ticket ID 1234
 
 ## PARAMETERS

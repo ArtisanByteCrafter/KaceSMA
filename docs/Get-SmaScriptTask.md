@@ -7,11 +7,12 @@ schema: 2.0.0
 
 # Get-SmaScriptTask
 
+## SYNOPSIS
+
 ## SYNTAX
 
 ```
-Get-SmaScriptTask [-Server] <String> [[-Org] <String>] [-Credential] <PSCredential> [-ScriptID] <Int32>
- [[-OrderID] <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-SmaScriptTask [-ScriptID] <Int32> [[-OrderID] <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -37,7 +38,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 4
+Position: 1
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -53,7 +54,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 2
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
