@@ -1,7 +1,7 @@
 ---
 external help file: KaceSMA-help.xml
 Module Name: KaceSMA
-online version:
+online version: https://github.com/ArtisanByteCrafter/KaceSMA/blob/master/docs/Get-SmaServiceDeskTicket.md
 schema: 2.0.0
 ---
 
