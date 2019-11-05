@@ -5,7 +5,7 @@ Function Get-MachineInventory {
     )]
     param(
 
-        [Parameter()]
+        [Parameter(Position = 0)]
         [string]
         $MachineID,
 

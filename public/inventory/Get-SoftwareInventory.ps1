@@ -4,7 +4,7 @@ Function Get-SoftwareInventory {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter()]
+        [Parameter(Position = 0)]
         [string]
         $SoftwareID,
 

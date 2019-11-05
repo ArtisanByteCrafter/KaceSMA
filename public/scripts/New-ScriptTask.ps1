@@ -4,7 +4,7 @@ Function New-ScriptTask {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position = 0)]
         [int]
         $ScriptID,
 

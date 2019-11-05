@@ -4,7 +4,7 @@ Function Get-Script {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter()]
+        [Parameter(Position = 0)]
         [int]
         $ScriptID,
 

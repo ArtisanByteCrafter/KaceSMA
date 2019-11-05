@@ -5,15 +5,15 @@ Function Get-ReportingDefinition {
         DefaultParameterSetName = "DefinitionID"
     )]
     param(
-        [Parameter(ParameterSetName = 'A')]
+        [Parameter(ParameterSetName = 'A',Position = 0)]
         [int]
         $DefinitionID,
 
-        [Parameter(ParameterSetName = 'B')]
+        [Parameter(ParameterSetName = 'B',Position = 0)]
         [string]
         $DefinitionName,
 
-        [Parameter(ParameterSetName = 'C')]
+        [Parameter(ParameterSetName = 'C',Position = 0)]
         [string]
         $DistinctField,
 

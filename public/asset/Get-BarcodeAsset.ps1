@@ -4,7 +4,7 @@ Function Get-BarcodeAsset {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter()]
+        [Parameter(Position = 0)]
         [int]
         $BarcodeID,
 

@@ -4,11 +4,11 @@ Function Invoke-Script {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position = 0)]
         [int]
         $ScriptID,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position = 1)]
         [ValidateNotNullOrEmpty()]
         [array]
         $TargetMachineID

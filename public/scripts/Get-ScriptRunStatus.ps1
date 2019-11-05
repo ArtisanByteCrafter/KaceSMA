@@ -4,7 +4,7 @@ Function Get-ScriptRunStatus {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position = 0)]
         [int]
         $RunID
     )

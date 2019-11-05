@@ -4,7 +4,7 @@ Function Get-MachineService {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter()]
+        [Parameter(Position = 0)]
         [string]
         $ServiceID,
 

@@ -4,7 +4,7 @@ Function Get-ManagedInstall {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter()]
+        [Parameter(Position = 0)]
         [int]
         $ManagedInstallID,
 

@@ -4,7 +4,7 @@ Function Get-Asset {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter()]
+        [Parameter(Position = 0)]
         [int]
         $AssetID,
 

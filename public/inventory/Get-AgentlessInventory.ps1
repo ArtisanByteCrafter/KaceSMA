@@ -5,7 +5,7 @@ Function Get-AgentlessInventory {
     )]
     param(
         
-        [Parameter()]
+        [Parameter(Position = 0)]
         [int]
         $NodesID,
 

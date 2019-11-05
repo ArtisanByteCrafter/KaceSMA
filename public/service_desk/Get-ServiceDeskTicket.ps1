@@ -4,6 +4,7 @@ Function Get-ServiceDeskTicket {
         ConfirmImpact = 'low'
     )]
     param(
+        [Parameter(Position = 0)]
         [int]
         $TicketID,
 

@@ -4,7 +4,7 @@ Function Get-ArchiveAsset {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position = 0)]
         [int]
         $AssetID,
 

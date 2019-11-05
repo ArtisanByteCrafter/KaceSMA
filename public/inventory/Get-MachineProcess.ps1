@@ -4,7 +4,7 @@ Function Get-MachineProcess {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter()]
+        [Parameter(Position = 0)]
         [string]
         $ProcessID,
 

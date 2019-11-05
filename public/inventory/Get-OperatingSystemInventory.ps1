@@ -5,7 +5,7 @@ Function Get-OperatingSystemInventory {
     )]
     param(
  
-        [Parameter()]
+        [Parameter(Position = 0)]
         [string]
         $MachineID,
 

@@ -4,7 +4,7 @@ Function Get-ManagedInstallMachineCompatibility {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position = 0)]
         [int]
         $MachineID,
 

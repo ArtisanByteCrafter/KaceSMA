@@ -5,7 +5,7 @@ Function Set-AssetAsArchived {
     )]
     param(
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position = 0)]
         [int]
         $AssetID,
 

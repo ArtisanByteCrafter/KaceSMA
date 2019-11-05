@@ -1,6 +1,6 @@
 Function Connect-Server {
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position = 0)]
         [ValidateScript( {
                 If ($_ -notmatch "^(http|https)://") {
                     Throw 'Must start with "http://" or "https://"'
