@@ -25,6 +25,6 @@ jobs:
         sudo apt-get install -y powershell
     - script: |
         pwsh -c 'Find-Module pester -Repository psgallery | Install-Module -MinimumVersion 4.3.1 -Force -SkipPublisherCheck -Scope CurrentUser'
-        - script: |
+    - script: |
         pwsh -c '.\build.ps1'
       displayName: 'Build and Test'
