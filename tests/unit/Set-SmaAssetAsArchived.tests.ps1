@@ -11,16 +11,13 @@ Describe 'Set-SmaAssetAsArchived Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            $Server = 'https://foo'
 
             $Body = @{
                 archiveReason = "Testing Archival via API"
             }
             
             $ArchiveSplat = @{
-                Server = 'https://foo'
-                Org = 'Default'
-                Credential = $MockCred
                 AssetId = 1234
                 Body = $Body
             }

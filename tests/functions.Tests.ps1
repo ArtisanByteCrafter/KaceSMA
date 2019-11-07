@@ -46,17 +46,7 @@ Describe "General Function Tests" {
             It "PUBLIC function $function.ps1 should exist" {
                 "$root\public\*\$function.ps1" | Should -Exist
             }
-            It "PUBLIC function $function.ps1 HELP block should exist" {
-                "$root\public\*\$function.ps1" | Should -FileContentMatch '<#'
-                "$root\public\*\$function.ps1" | Should -FileContentMatch '#>'
-                
-            }
-            It "PUBLIC function $function.ps1 should have Example" {
-                "$root\public\*\$function.ps1" | Should -FileContentMatch '.EXAMPLE'
-            }
-            It "PUBLIC function $function.ps1 should have Description" {
-                "$root\public\*\$function.ps1" | Should -FileContentMatch '.DESCRIPTION'
-            }
+
             It "$function.ps1 is valid Powershell code" {
                 $psFile = Get-Content -Path "$root\public\*\$function.ps1" -ErrorAction Stop
                 $errors = $null

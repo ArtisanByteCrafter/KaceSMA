@@ -11,18 +11,13 @@ Describe 'Get-SmaServiceDeskQueue Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            $Server='https://foo'
 
             $GenericParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
+                QueryParameters = "?paging=50"
             }
 
             $QueueIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 QueueID = 1
             }
 
@@ -60,9 +55,6 @@ Describe 'Get-SmaServiceDeskQueue Unit Tests' -Tags 'Unit' {
             $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
 
             $QueueIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 QueueID = 1
             }
 

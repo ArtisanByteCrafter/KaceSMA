@@ -1,0 +1,22 @@
+- job: Build_PS_Windows_Latest
+  pool:
+    vmImage: windows-latest
+    steps:
+    - script: Invoke-Pester
+      displayName: 'Pester Tests'
+
+
+
+
+
+
+
+- job: Build_PSCore_Ubuntu_Latest
+  pool:
+    vmImage: ubuntu-latest
+
+
+
+- job: Build_PSCore_MacOS1013
+  pool:
+    vmImage: xcode9-macos10.13

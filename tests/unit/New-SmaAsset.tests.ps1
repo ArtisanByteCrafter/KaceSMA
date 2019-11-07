@@ -11,8 +11,8 @@ Describe 'New-SmaAsset Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
+            $Server = 'https://foo'
+            
             $NewAgentAsset = @{
                 'Assets' =@(
                     @{
@@ -25,9 +25,6 @@ Describe 'New-SmaAsset Unit Tests' -Tags 'Unit' {
             }
 
             $BodyParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 Body = $NewAgentAsset
             }
 
@@ -69,9 +66,6 @@ Describe 'New-SmaAsset Unit Tests' -Tags 'Unit' {
                 )
             }
             $BodyParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 Body = $NewAgentAsset
             }
 

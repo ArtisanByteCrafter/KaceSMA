@@ -6,19 +6,16 @@ Import-Module $root\KaceSMA.psd1
 Describe 'Remove-SmaServiceDeskTicket Unit Tests' -Tags 'Unit' {
     InModuleScope KaceSMA {
         Context 'Backend Calls' {
-            Mock New-ApiGetRequest {} -ModuleName KaceSMA
-            Mock New-ApiPostRequest {} -ModuleName KaceSMA
-            Mock New-ApiPutRequest {} -ModuleName KaceSMA
-            Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
+            Mock New-ApiGetRequest { } -ModuleName KaceSMA
+            Mock New-ApiPostRequest { } -ModuleName KaceSMA
+            Mock New-ApiPutRequest { } -ModuleName KaceSMA
+            Mock New-ApiDeleteRequest { } -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
+            $Server = 'https://foo'
+            
             $RemoveTicketParams = @{
-                Server     = 'https://foo'
-                Credential = $MockCred
-                TicketID   = 1234
-                Org        = 'Default'
-                Confirm    = $false
+                TicketID = 1234
+                Confirm  = $false
             }
 
             Remove-SmaServiceDeskTicket @RemoveTicketParams
@@ -28,7 +25,7 @@ Describe 'Remove-SmaServiceDeskTicket Unit Tests' -Tags 'Unit' {
             }
 
             It 'should not call additional HTTP request methods' {
-                $Methods = @('GET','POST','PUT')
+                $Methods = @('GET', 'POST', 'PUT')
                 Foreach ($Method in $Methods) {
                     Assert-MockCalled -CommandName ("New-Api$Method" + "Request") -ModuleName KaceSMA -Times 0
                 }
@@ -36,7 +33,7 @@ Describe 'Remove-SmaServiceDeskTicket Unit Tests' -Tags 'Unit' {
 
             It "should call '/api/service_desk/tickets/1234' endpoint" {
                 $WithBody = $(Remove-SmaServiceDeskTicket @RemoveTicketParams -Verbose) 4>&1
-                $WithBody  | Should -Be 'Performing the operation "DELETE /api/service_desk/tickets/1234" on target "https://foo".'
+                $WithBody | Should -Be 'Performing the operation "DELETE /api/service_desk/tickets/1234" on target "https://foo".'
             }
         }
     }

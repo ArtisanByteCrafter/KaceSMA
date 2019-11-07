@@ -11,35 +11,23 @@ Describe 'Get-SmaReportingDefinition Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            $Server='https://foo'
 
             $GenericParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-                QueryParameters = "?orgID=1"
+                QueryParameters = "?paging=50"
             }
 
             $DefinitionIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 DefinitionID = '1234'
                 QueryParameters = "?orgID=1"
             }
 
             $DefinitionNameParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 DefinitionName = 'fooname'
                 QueryParameters = "?orgID=1"
             }
 
             $DistinctFieldParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 DistinctField = 'foofield'
                 QueryParameters = "?orgID=1"
             }
@@ -84,12 +72,7 @@ Describe 'Get-SmaReportingDefinition Unit Tests' -Tags 'Unit' {
                 return $MockResponse
             } -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
             $GenericParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 QueryParameters = "?paging=50"
             }
 

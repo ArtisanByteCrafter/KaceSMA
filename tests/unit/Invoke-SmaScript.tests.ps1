@@ -11,14 +11,11 @@ Describe 'Invoke-SmaScript Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            $Server = 'https://foo'
 
             $ScriptIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 ScriptID = 1234
-                TargetMachineIds=1,2
+                TargetMachineId=1,2
             }
 
             Invoke-SmaScript @ScriptIDParams
@@ -46,18 +43,13 @@ Describe 'Invoke-SmaScript Unit Tests' -Tags 'Unit' {
                 return $MockResponse
             } -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
             $ScriptIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 ScriptID = 1234
-                TargetMachineIds=1,2
+                TargetMachineId=1,2
             }
 
             It 'should produce Int32 output' {
-               $output = Invoke-SmaScript @ScriptIDParams 
+               $output = Invoke-SmaScript @ScriptIDParams
                $output | Should -BeOfType Int32
             }
         }

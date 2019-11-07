@@ -11,8 +11,8 @@ Describe 'Set-SmaMachineInventory Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
+            $Server = 'https://foo'
+            
             $Body = @{
                 'Machines' = @(
                     @{
@@ -23,9 +23,6 @@ Describe 'Set-SmaMachineInventory Unit Tests' -Tags 'Unit' {
             }
             
             $MachineSplat = @{
-                Server = 'https://foo'
-                Org = 'Default'
-                Credential = $MockCred
                 MachineId = 1234
                 Body = $Body
             }

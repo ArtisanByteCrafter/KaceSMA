@@ -11,19 +11,13 @@ Describe 'Get-SmaScriptDependency Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
+            $Server = 'https://foo'
+            
             $ScriptIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 ScriptID = '1234'
             }
 
             $ScriptIDDependencyParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 ScriptID = '1234'
                 DependencyName = 'foodependency'
             }
@@ -68,16 +62,10 @@ Describe 'Get-SmaScriptDependency Unit Tests' -Tags 'Unit' {
             $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
 
             $ScriptIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 ScriptID = '1234'
             }
 
             $ScriptIDDependencyParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 ScriptID = '1234'
                 DependencyName = 'foodependency'
             }

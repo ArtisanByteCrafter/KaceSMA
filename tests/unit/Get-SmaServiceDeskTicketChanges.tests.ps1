@@ -11,12 +11,9 @@ Describe 'Get-SmaServiceDeskTicketChanges Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            $Server = 'https://foo'
 
             $TicketIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 TicketID = 1234
             }
 
@@ -47,12 +44,7 @@ Describe 'Get-SmaServiceDeskTicketChanges Unit Tests' -Tags 'Unit' {
                 return $MockResponse
             } -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
             $TicketIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 TicketID = 1234
             }
 

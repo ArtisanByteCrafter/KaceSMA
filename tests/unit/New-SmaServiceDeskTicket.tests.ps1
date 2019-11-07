@@ -11,8 +11,8 @@ Describe 'New-SmaServiceDeskTicket Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
+            $Server = 'https://foo'
+            
             $Body = @{
                 'Tickets' =@(
                     @{
@@ -25,9 +25,6 @@ Describe 'New-SmaServiceDeskTicket Unit Tests' -Tags 'Unit' {
             }
 
             $NewTicketParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 Body = $Body
             }
 

@@ -11,12 +11,9 @@ Describe 'Get-SmaManagedInstallMachineCompatibility Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
+            $Server = 'https://foo'
+            
             $MachineIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 MachineID = '1234'
                 QueryParameters = "?paging=50"
             }
@@ -47,12 +44,7 @@ Describe 'Get-SmaManagedInstallMachineCompatibility Unit Tests' -Tags 'Unit' {
                 return $MockResponse
             } -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
             $MachineIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 MachineID = '1234'
                 QueryParameters = "?paging=50"
             }

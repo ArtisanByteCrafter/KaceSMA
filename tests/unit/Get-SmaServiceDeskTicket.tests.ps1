@@ -11,23 +11,14 @@ Describe 'Get-SmaServiceDeskTicket Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
-            $GenericParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-            }
-
+            $Server = 'https://foo'
+            
             $TicketIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 TicketID = 1234
             }
 
 
-            Get-SmaServiceDeskTicket @GenericParams
+            Get-SmaServiceDeskTicket
 
             It 'should call New-ApiGETRequest' {
                 Assert-MockCalled -CommandName New-ApiGETRequest -ModuleName KaceSMA -Times 1
@@ -40,7 +31,7 @@ Describe 'Get-SmaServiceDeskTicket Unit Tests' -Tags 'Unit' {
                 }
             }
             It "should call generic endpoint if -TicketID is not specified" {
-                $WithoutTicketID = $(Get-SmaServiceDeskTicket @GenericParams -Verbose) 4>&1
+                $WithoutTicketID = $(Get-SmaServiceDeskTicket -Verbose) 4>&1
                 $WithoutTicketID  | Should -Be 'Performing the operation "GET /api/service_desk/tickets" on target "https://foo".'
             }
 
@@ -57,12 +48,7 @@ Describe 'Get-SmaServiceDeskTicket Unit Tests' -Tags 'Unit' {
                 return $MockResponse
             } -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
             $TicketIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 TicketID = 1
             }
 

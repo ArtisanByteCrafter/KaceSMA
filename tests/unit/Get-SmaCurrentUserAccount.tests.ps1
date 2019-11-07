@@ -11,15 +11,8 @@ Describe 'Get-SmaCurrentUserAccount Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
-            $GenericParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-            }
-
-            Get-SmaCurrentUserAccount @GenericParams
+            $Server = 'https://foo'
+            Get-SmaCurrentUserAccount
 
             It 'should call New-ApiGETRequest' {
                 Assert-MockCalled -CommandName New-ApiGETRequest -ModuleName KaceSMA -Times 1
@@ -33,7 +26,7 @@ Describe 'Get-SmaCurrentUserAccount Unit Tests' -Tags 'Unit' {
             }
 
             It "should call generic endpoint" {
-                $Generic = $(Get-SmaCurrentUserAccount @GenericParams -Verbose) 4>&1
+                $Generic = $(Get-SmaCurrentUserAccount -Verbose) 4>&1
                 $Generic  | Should -Be 'Performing the operation "GET /api/users/me" on target "https://foo".'
             }
         }
@@ -63,45 +56,10 @@ Describe 'Get-SmaCurrentUserAccount Unit Tests' -Tags 'Unit' {
                 return $MockResponse
             } -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
-            $GenericParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-            }
-
             It 'should produce [PSCustomObject] output' {
 
-               $output = Get-SmaCurrentUserAccount @GenericParams 
+               $output = Get-SmaCurrentUserAccount 
                $output | Should -BeOfType System.Management.Automation.PSCustomObject
-            }
-
-            It 'should have valid NoteProperty values' {
-                $NoteProperties = @(
-                    'apiEnabled'
-                    'canAddTickets'
-                    'canAddTicketsUserPortal'
-                    'currentOrgId'
-                    'defaultQueueID'
-                    'deviceScope'
-                    'licensedFeatures'
-                    'localTimezone'
-                    'loggedin'
-                    'loggedinEmail'
-                    'loggedinFullName'
-                    'loggedinID'
-                    'orgs'
-                    'permissions'
-                    'RESTAPIVersion'
-                    'serialNumber'
-                    'supportAvailable'
-                    'userID'
-                    )
-                $output = Get-SmaCurrentUserAccount @GenericParams
-                ($output | Get-Member -Type NoteProperty).Name | Should -Be $NoteProperties
-                ($output | Get-Member -Type NoteProperty).Count | Should -Be 18
-
             }
         }
     }
