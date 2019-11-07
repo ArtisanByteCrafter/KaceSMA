@@ -27,7 +27,6 @@ Function Get-Asset {
         }
     }
     Process {
-        asdf
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
