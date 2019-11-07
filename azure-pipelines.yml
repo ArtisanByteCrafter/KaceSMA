@@ -12,19 +12,3 @@ jobs:
         testResultsFiles: '**/TestResults.xml'
         testRunTitle: 'PS_Win2016'
       displayName: 'Publish Test Results'
-
-
-- job: Build_PSCore_Ubuntu_Latest
-  pool:
-    vmImage: ubuntu-latest
-  steps:
-    - script: |
-        curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-        curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
-        sudo apt-get update
-        sudo apt-get install -y powershell
-    - script: |
-        pwsh -c 'Find-Module pester -Repository psgallery | Install-Module -MinimumVersion 4.3.1 -Force -SkipPublisherCheck -Scope CurrentUser'
-    - script: |
-        pwsh -c '.\build.ps1'
-      displayName: 'Build and Test'
