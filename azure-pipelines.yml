@@ -1,3 +1,4 @@
+jobs:
 - job: Build_PS_Windows_Latest
   pool:
     vmImage: windows-latest
