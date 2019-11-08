@@ -1,8 +1,3 @@
-$root = Split-Path (Split-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) -Parent) -Parent
-
-Get-Module KaceSMA | Remove-Module -Force
-Import-Module $root\KaceSMA.psd1
-
 Describe 'Get-SmaStartupProgramInventory Unit Tests' -Tags 'Unit' {
     InModuleScope KaceSMA {
         Context 'Backend Calls' {
