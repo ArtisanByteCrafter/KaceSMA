@@ -1,9 +1,9 @@
 # KaceSMA
+|Build Status|Version|Downloads
+|---|---|---|
+|[![Build Status](https://artisanbytecrafter.visualstudio.com/KaceSMA/_apis/build/status/ArtisanByteCrafter.KaceSMA?branchName=WIP-v2.0)](https://artisanbytecrafter.visualstudio.com/KaceSMA/_build/latest?definitionId=3&branchName=WIP-v2.0)| [![](https://img.shields.io/powershellgallery/v/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)](https://www.powershellgallery.com/packages/KaceSMA)|![](https://img.shields.io/powershellgallery/dt/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)
 
-[![](https://img.shields.io/powershellgallery/v/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)](https://www.powershellgallery.com/packages/KaceSMA)
-![](https://img.shields.io/powershellgallery/dt/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)
-[![GitHub issues](https://img.shields.io/github/issues/ArtisanByteCrafter/KaceSMA.svg?style=flat&colorA=1C8FDB)](https://github.com/ArtisanByteCrafter/KaceSMA/issues)
----
+
 
 A module for interacting with a Quest Kace Systems Management Appliance via Powershell.
 
