@@ -11,6 +11,7 @@ Task 'Init' {
 task 'Pester' -depends 'Init' {
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
     $PSVersion = $PSVersionTable.PSVersion.Major
+    $ModuleRoot = (Split-Path $PSScriptRoot -Parent)
     
     $TestFile = "PSv${PSVersion}_${TimeStamp}_KaceSMA.TestResults.xml"
 
