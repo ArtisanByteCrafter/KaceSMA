@@ -5,6 +5,12 @@ steps:
 - powershell: .\Build\build.ps1
   displayName: Start The Build
 
+- task: PowerShell@2
+  inputs:
+    filePath: './Build/build.ps1'
+    failOnStderr: true
+    pwsh: true
+
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'NUnit'
