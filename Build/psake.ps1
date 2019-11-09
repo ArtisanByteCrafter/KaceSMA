@@ -3,7 +3,7 @@ Task 'Default' -Depends 'Pester'
 Task 'Init' {
     $ModuleRoot = (Split-Path $PSScriptRoot -Parent)
 
-    Import-Module -Name Psake, BuildHelpers, (Join-Path $ModuleRoot KaceSma.psd1)
+    Import-Module -Name Psake, (Join-Path $ModuleRoot KaceSma.psd1)
    
 }
 
