@@ -18,7 +18,7 @@ task 'Pester' -depends 'Init' {
         Path                   = (Join-Path (Split-Path $PSScriptRoot -Parent) 'tests')
         PassThru               = $true
         OutputFormat           = 'NUnitXml'
-        OutputFile             = $TestFile
+        OutputFile             = (Join-Path $ModuleRoot $TestFile)
         Show                   = "Header", "Failed", "Summary"
     }
 
