@@ -19,7 +19,7 @@ task 'Pester' -depends 'Init' {
         PassThru               = $true
         OutputFormat           = 'NUnitXml'
         OutputFile             = $TestFile
-        
+        Show                   = "Header", "Failed", "Summary"
     }
 
     $TestResults = Invoke-Pester @PesterParams # -Script (Join-Path (Split-Path $PSScriptRoot -Parent) 'tests')

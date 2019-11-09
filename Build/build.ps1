@@ -7,7 +7,8 @@ Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 
 $ModuleRoot = (Split-Path $PSScriptRoot -Parent)
 
-Install-Module Psake -Scope CurrentUser -Force
+Install-Module Psake,Pester -Scope CurrentUser -Force
+
 
 Import-Module -Name Psake, (Join-Path $ModuleRoot KaceSma.psd1)
 
