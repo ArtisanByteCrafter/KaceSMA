@@ -77,7 +77,6 @@ Function Connect-Server {
             [PSCustomObject]@{
                 Server   = $script:Server -replace 'https://', ''
                 Org      = $Org
-                Status   = 'Connected'
                 Protocol = if ($Server -match "^(https)://") { 'HTTPS' }else { 'HTTP' }
                 User     = $Credential.username
             }
