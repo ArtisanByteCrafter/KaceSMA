@@ -5,7 +5,7 @@ jobs:
     steps:
     - task: PowerShell@2
       inputs:
-        filePath: './Build/Build1.ps1'
+        filePath: './Build/Build.ps1'
         arguments: '-Task Default'
         failOnStderr: true
         pwsh: true
@@ -16,4 +16,5 @@ jobs:
         mergeTestResults: true
         failTaskOnFailedTests: true
         testRunTitle: 'PS_Win2016'
+
 
