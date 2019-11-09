@@ -1,23 +1,16 @@
-jobs:
-- job: Build_PS_Windows_Latest
-  pool:
-    vmImage: windows-latest
-    steps:
-    - task: PowerShell@2
-      displayName: 'Run Pester Tests'
+pool:
+  vmImage: windows-latest
 
-      inputs:
-      targetType: 'filePath'
-      filePath: ./Build/Build.ps1
-      arguments: -Task Default
+steps:
+- powershell: .\Build\build.ps1
+  displayName: Start The Build
 
-      errorActionPreference: 'stop'
-      failOnStderr: true
-      pwsh: true
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'NUnit'
-        testResultsFiles: '**/TestResults.xml'
-        mergeTestResults: true
-        failTaskOnFailedTests: true
-        testRunTitle: 'PS_Win2016'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**/TEST-*.xml'
+    mergeTestResults: true
+    failTaskOnFailedTests: true
+    testRunTitle: 'Test Run'
+
+
