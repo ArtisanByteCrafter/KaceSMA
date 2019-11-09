@@ -4,16 +4,11 @@ jobs:
     vmImage: windows-latest
     steps:
     - task: PowerShell@2
-      displayName: 'Run Pester Tests'
-
       inputs:
-      targetType: 'filePath'
-      filePath: ./Build/Build.ps1
-      arguments: -Task Default
-
-      errorActionPreference: 'stop'
-      failOnStderr: true
-      pwsh: true
+        filePath: './Build/Build1.ps1'
+        arguments: '-Task Default'
+        failOnStderr: true
+        pwsh: true
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'NUnit'
@@ -21,3 +16,4 @@ jobs:
         mergeTestResults: true
         failTaskOnFailedTests: true
         testRunTitle: 'PS_Win2016'
+
