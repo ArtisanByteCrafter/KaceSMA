@@ -2,10 +2,14 @@ pool:
   vmImage: windows-latest
 
 steps:
-- powershell: .\Build\build.ps1
-  displayName: Start The Build
+- task: PowerShell@2
+  displayName: 'Pester Tests - Windows Powershell'
+  inputs:
+    filePath: '.\Build\build.ps1'
+    failOnStderr: true
 
 - task: PowerShell@2
+  displayName: 'Pester Tests - Powershell Core'
   inputs:
     filePath: './Build/build.ps1'
     failOnStderr: true
@@ -18,5 +22,3 @@ steps:
     mergeTestResults: true
     failTaskOnFailedTests: true
     testRunTitle: 'Test Run'
-
-
