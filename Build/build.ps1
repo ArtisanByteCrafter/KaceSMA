@@ -11,8 +11,6 @@ Install-Module Psake -Scope CurrentUser -Force
 
 Import-Module -Name Psake, (Join-Path $ModuleRoot KaceSma.psd1)
 
-Set-BuildEnvironment
-
 $invokePsakeSplat = @{
     TaskList  = $Task
     NoLogo    = $true
