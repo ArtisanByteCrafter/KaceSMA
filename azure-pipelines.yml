@@ -9,7 +9,7 @@ jobs:
       inputs:
       targetType: 'filePath'
       filePath: ./Build/Build.ps1
-      arguments: -Task Build
+      arguments: -Task Default
 
       errorActionPreference: 'stop'
       failOnStderr: true
