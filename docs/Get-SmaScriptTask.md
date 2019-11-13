@@ -27,6 +27,13 @@ PS> Get-SmaScriptTask -ScriptID 1234
 
 Retrieves task information about a script with ID 1234.
 
+### EXAMPLE 2
+```powershell
+PS> Get-SmaScript 1234 | Get-SmaScriptTask
+```
+
+Uses pipeline to retrieves task information about a script with ID 1234.
+
 ## PARAMETERS
 
 ### -Confirm

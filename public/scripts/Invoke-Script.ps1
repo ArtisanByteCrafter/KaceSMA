@@ -4,29 +4,42 @@ Function Invoke-Script {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory,Position = 0)]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('ScriptId')]
         [int]
-        $ScriptID,
+        $Id,
 
-        [Parameter(Mandatory,Position = 1)]
+        [Parameter(
+            Mandatory,
+            Position = 1
+        )]
         [ValidateNotNullOrEmpty()]
         [array]
         $TargetMachineID
 
     )
-    Begin {
-        $Endpoint = "/api/script/{0}/actions/run" -f $ScriptID
-        $Machines = $TargetMachineID -join ','
-    }
+    Begin { }
     Process {
+        $Endpoint = "/api/script/{0}/actions/run" -f $Id
+        $Machines = $TargetMachineID -join ','
+
         If ($PSCmdlet.ShouldProcess($Server, "POST $Endpoint")) {
             
             $newApiPOSTRequestSplat = @{
-                QueryParameters = "?machineIDs=$Machines"
+                QueryParameters = "?machineIDs={0}" -f $Machines
                 Endpoint        = $Endpoint
             }
-            New-ApiPOSTRequest @newApiPOSTRequestSplat
+            $Result = New-ApiPOSTRequest @newApiPOSTRequestSplat
         }
     }
-    End { }
+    End {
+        [PSCustomObject]@{
+            RunId = $Result
+        }
+    }
 }

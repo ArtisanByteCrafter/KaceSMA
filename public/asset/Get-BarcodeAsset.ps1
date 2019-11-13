@@ -4,29 +4,37 @@ Function Get-BarcodeAsset {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Position = 0)]
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+            )]
+        [Alias('BarcodeId')]
         [int]
-        $BarcodeID,
+        $Id,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
     )
-    Begin {
-        $Endpoint = '/api/asset/barcodes'
-        If ($BarcodeID) {
-            $Endpoint = "/api/asset/barcodes/{0}" -f $BarcodeID
-        }
-    }
+    Begin { }
     Process {
+        $Endpoint = '/api/asset/barcodes'
+        
+        If ($Id) {
+            $Endpoint = "/api/asset/barcodes/{0}" -f $Id
+        }
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Results = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Results.Barcodes
+    }
 }

@@ -4,22 +4,28 @@ Function Get-ScriptDependency {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory,Position = 0)]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('ScriptId')]
         [int]
-        $ScriptID,
+        $Id,
 
         [Parameter()]
         [string]
         $DependencyName
     )
-    Begin {
-        $Endpoint = "/api/script/{0}/dependencies" -f $ScriptID
+    Begin { }
+    Process {
+        $Endpoint = "/api/script/{0}/dependencies" -f $Id
+        
         If ($DependencyName) {
-            $Endpoint = "/api/script/{0}/dependency/{1}" -f $ScriptID, $DependencyName
+            $Endpoint = "/api/script/{0}/dependency/{1}" -f $Id, $DependencyName
         }
 
-    }
-    Process {
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             New-ApiGETRequest -Endpoint $Endpoint
         }

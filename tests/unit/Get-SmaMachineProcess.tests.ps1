@@ -6,56 +6,29 @@ Describe 'Get-SmaMachineProcess Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $Server='https://foo'
+            It 'should call only New-ApiGETRequest' {
+                Get-SmaMachineProcess -Id 1234 -QueryParameters "?paging=50"
 
-            $GenericParams = @{
-                QueryParameters = "?paging=50"
-            }
-
-            $ProcessIDParams = @{
-                ProcessID = '1234'
-                QueryParameters = "?paging=50"
-            }
-
-            Get-SmaMachineProcess @ProcessIDParams
-
-            It 'should call New-ApiGETRequest' {
                 Assert-MockCalled -CommandName New-ApiGETRequest -ModuleName KaceSMA -Times 1
-            }
 
-            It 'should not call additional HTTP request methods' {
-                $Methods = @('POST','DELETE','PUT')
+                $Methods = @('POST', 'DELETE', 'PUT')
                 Foreach ($Method in $Methods) {
                     Assert-MockCalled -CommandName ("New-Api$Method" + "Request") -ModuleName KaceSMA -Times 0
                 }
             }
-
-            It "should call generic endpoint if ProcessID parameter is not specified" {
-                $Generic = $(Get-SmaMachineProcess @GenericParams -Verbose) 4>&1
-                $Generic  | Should -Be 'Performing the operation "GET /api/inventory/processes" on target "https://foo".'
-            }
-
-            It "should call ProcessID endpoint if ProcessID parameter is specified" {
-                $WithProcessID = $(Get-SmaMachineProcess @ProcessIDParams -Verbose) 4>&1
-                $WithProcessID  | Should -Be 'Performing the operation "GET /api/inventory/processes/1234" on target "https://foo".'
-            }
         }
 
-        Context 'Function Output' {
-            Mock New-ApiGetRequest {
-                $MockResponse = [pscustomobject]@{'Count'=1;'Warnings'=@{};'Processes'=@{}}
-                return $MockResponse
-            } -ModuleName KaceSMA
+        Context 'Parameter input' {
 
-            $GenericParams = @{
-                QueryParameters = "?paging=50"
+            Mock New-ApiGetRequest { } -ModuleName KaceSMA
+
+            It "Should take parameter from pipeline" {
+                {1234 | Get-SmaMachineProcess} | Should -Not -Throw
+
             }
 
-            It 'should produce [PSCustomObject] output' {
-
-               $output = Get-SmaMachineProcess @GenericParams 
-               $output | Should -Be "@{Count=1; Warnings=System.Collections.Hashtable; Processes=System.Collections.Hashtable}"
-               $output | Should -BeOfType System.Management.Automation.PSCustomObject
+            It "Should take parameter from position" {
+                {Get-SmaMachineProcess -Id 1234} | Should -Not -Throw
             }
         }
     }

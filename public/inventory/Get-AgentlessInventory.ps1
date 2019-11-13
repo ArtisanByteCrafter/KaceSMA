@@ -5,29 +5,37 @@ Function Get-AgentlessInventory {
     )]
     param(
         
-        [Parameter(Position = 0)]
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('NodesId')]
         [int]
-        $NodesID,
+        $Id,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
     )
-    Begin {
+    Begin { }
+    Process {
         $Endpoint = '/api/inventory/nodes'
 
-        If ($NodesID) {
-            $Endpoint = "/api/inventory/nodes/{0}" -f $NodesID
+        If ($ID) {
+            $Endpoint = "/api/inventory/nodes/{0}" -f $ID
         }
-    }
-    Process {
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
+    }
+    End {
+        $Result.Nodes
     }
 }

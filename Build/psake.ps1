@@ -16,14 +16,14 @@ task 'Pester' -depends 'Init' {
     $TestFile = "PSv${PSVersion}_${TimeStamp}_KaceSMA.TestResults.xml"
 
     $PesterParams = @{
-        Path                   = (Join-Path (Split-Path $PSScriptRoot -Parent) 'tests')
-        PassThru               = $true
-        OutputFormat           = 'NUnitXml'
-        OutputFile             = (Join-Path $ModuleRoot $TestFile)
-        Show                   = "Header", "Failed", "Summary"
+        Path         = (Join-Path (Split-Path $PSScriptRoot -Parent) 'tests')
+        PassThru     = $true
+        OutputFormat = 'NUnitXml'
+        OutputFile   = (Join-Path $ModuleRoot $TestFile)
+        Show         = "Header", "Failed", "Summary"
     }
 
-    $TestResults = Invoke-Pester @PesterParams # -Script (Join-Path (Split-Path $PSScriptRoot -Parent) 'tests')
+    $TestResults = Invoke-Pester @PesterParams
 
     if ($TestResults.FailedCount -gt 0) {
         Write-Error "Failed $($TestResults.FailedCount) tests; build failed!"

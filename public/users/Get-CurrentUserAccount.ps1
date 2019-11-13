@@ -3,13 +3,11 @@ Function Get-CurrentUserAccount {
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low'
     )]
-    param(
-
-    )
-    Begin {
-        $Endpoint = "/api/users/me"
-    }
+    param( )
+    Begin { }
     Process {
+        $Endpoint = "/api/users/me"
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             New-ApiGETRequest -Endpoint $Endpoint
         }

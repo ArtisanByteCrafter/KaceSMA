@@ -4,9 +4,15 @@ Function Get-UserPermissions {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory,Position = 0)]
-        [string]
-        $UserID,
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('AssetId')]
+        [int]
+        $Id,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -15,16 +21,20 @@ Function Get-UserPermissions {
 
     )
     Begin {
-        $Endpoint = "/api/users/{0}/permissions" -f $UserID
+        
     }
     Process {
+        $Endpoint = "/api/users/{0}/permissions" -f $Id
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Result
+    }
 }

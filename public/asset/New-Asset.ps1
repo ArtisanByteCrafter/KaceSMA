@@ -5,22 +5,28 @@ Function New-Asset {
     )]
     param(
 
-        [Parameter(Mandatory, Position = 0)]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline
+        )]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
     )
-    Begin {
-        $Endpoint = '/api/asset/assets'
-    }
+    Begin { }
     Process {
+        $Endpoint = '/api/asset/assets'
+
         If ($PSCmdlet.ShouldProcess($Server, "POST $Endpoint")) {
             $newApiPOSTRequestSplat = @{
                 Body     = $Body
                 Endpoint = $Endpoint
             }
-            New-ApiPOSTRequest @newApiPOSTRequestSplat
+            $Result = New-ApiPOSTRequest @newApiPOSTRequestSplat
         }
     }
-    End { }
+    End {
+        $Result
+    }
 }

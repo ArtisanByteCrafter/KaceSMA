@@ -4,26 +4,34 @@ Function Get-ManagedInstallMachineCompatibility {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory,Position = 0)]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('MachineId')]
         [int]
-        $MachineID,
+        $Id,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
     )
-    Begin {
-        $Endpoint = "/api/managed_install/machines/{0}" -f $MachineID
-    }
+    Begin { }
     Process {
+        $Endpoint = "/api/managed_install/machines/{0}" -f $Id
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Result.Machines
+    }
 }

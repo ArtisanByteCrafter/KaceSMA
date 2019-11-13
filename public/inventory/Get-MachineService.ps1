@@ -4,9 +4,14 @@ Function Get-MachineService {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Position = 0)]
-        [string]
-        $ServiceID,
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('ServiceId')]
+        [int]
+        $Id,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -14,20 +19,22 @@ Function Get-MachineService {
         $QueryParameters
     )
 
-    Begin {
-        $Endpoint = '/api/inventory/services'
-        If ($ServiceID) {
-            $Endpoint = "/api/inventory/services/{0}" -f $ServiceID
-        }
-    }
+    Begin { }
     Process {
+        $Endpoint = '/api/inventory/services'
+        If ($Id) {
+            $Endpoint = "/api/inventory/services/{0}" -f $Id
+        }
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Result.Services
+    }
 }

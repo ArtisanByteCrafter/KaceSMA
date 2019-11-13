@@ -4,9 +4,14 @@ Function Get-SoftwareInventory {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Position = 0)]
-        [string]
-        $SoftwareID,
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('SoftwareId')]
+        [int]
+        $Id,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -14,20 +19,22 @@ Function Get-SoftwareInventory {
         $QueryParameters
     )
 
-    Begin {
-        $Endpoint = '/api/inventory/softwares'
-        If ($SoftwareID) {
-            $Endpoint = "/api/inventory/softwares/{0}" -f $SoftwareID
-        }
-    }
+    Begin { }
     Process {
+        $Endpoint = '/api/inventory/softwares'
+        If ($Id) {
+            $Endpoint = "/api/inventory/softwares/{0}" -f $Id
+        }
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Result.Software
+    }
 }

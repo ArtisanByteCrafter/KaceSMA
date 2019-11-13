@@ -4,24 +4,38 @@ Function Get-ScriptTask {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Mandatory,Position = 0)]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('ScriptId')]
         [int]
-        $ScriptID,
+        $Id,
 
-        [Parameter()]
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('OrderId')]
         [int]
-        $OrderID
+        $OrdinalID
     )
-    Begin {
-        $Endpoint = "/api/script/{0}/tasks" -f $ScriptID
-        If ($OrderID) {
-            $Endpoint = "/api/script/{0}/task/{1}" -f $ScriptID, $OrderID
-        }
-    }
+    Begin { }
     Process {
+        $Endpoint = "/api/script/{0}/tasks" -f $Id
+
+        If ($OrdinalID) {
+            $Endpoint = "/api/script/{0}/task/{1}" -f $Id, $OrdinalID
+        }
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
-            New-ApiGETRequest -Endpoint $Endpoint
+            $Result = New-ApiGETRequest -Endpoint $Endpoint
         }
     }
-    End { }
+    End {
+        $Result
+    }
 }

@@ -10,10 +10,10 @@ Function Get-AssetType {
         [string]
         $QueryParameters
     )
-    Begin {
-        $Endpoint = '/api/asset/assets/types'
-    }
+    Begin { }
     Process {
+        $Endpoint = '/api/asset/assets/types'
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters

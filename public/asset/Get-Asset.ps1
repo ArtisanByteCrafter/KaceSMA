@@ -4,9 +4,14 @@ Function Get-Asset {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Position = 0)]
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+            )]
+        [Alias('AssetId')]
         [int]
-        $AssetID,
+        $Id,
 
         [Parameter()]
         [switch]
@@ -17,23 +22,25 @@ Function Get-Asset {
         [string]
         $QueryParameters
     )
-    Begin {
+    Begin { }
+    Process {
         $Endpoint = '/api/asset/assets'
-        If ($AssetID) {
-            $Endpoint = "/api/asset/assets/{0}" -f $AssetID
+        If ($Id) {
+            $Endpoint = "/api/asset/assets/{0}" -f $Id
             If ($AsBarcodes) {
-                $Endpoint = "/api/asset/assets/{0}/barcodes" -f $AssetID
+                $Endpoint = "/api/asset/assets/{0}/barcodes" -f $Id
             }
         }
-    }
-    Process {
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Result.Assets
+    }
 }

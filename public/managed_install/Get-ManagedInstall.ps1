@@ -4,9 +4,14 @@ Function Get-ManagedInstall {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Position = 0)]
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('ManagedInstallId')]
         [int]
-        $ManagedInstallID,
+        $Id,
 
         [Parameter()]
         [switch]
@@ -19,10 +24,11 @@ Function Get-ManagedInstall {
     )
     Begin {
         $Endpoint = '/api/managed_install/managed_installs'
-        If ($ManagedInstallID) {
-            $Endpoint = "/api/managed_install/managed_installs/{0}" -f $ManagedInstallID
+        
+        If ($Id) {
+            $Endpoint = "/api/managed_install/managed_installs/{0}" -f $Id
             If ($ListCompatibleMachines) {
-                $Endpoint = "/api/managed_install/managed_installs/{0}/compatible_machines" -f $ManagedInstallID
+                $Endpoint = "/api/managed_install/managed_installs/{0}/compatible_machines" -f $Id
             }
         }
     }
@@ -32,8 +38,10 @@ Function Get-ManagedInstall {
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Result.MIs
+    }
 }

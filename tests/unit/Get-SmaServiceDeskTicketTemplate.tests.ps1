@@ -1,51 +1,34 @@
 Describe 'Get-SmaServiceDeskTicketTemplate Unit Tests' -Tags 'Unit' {
     InModuleScope KaceSMA {
         Context 'Backend Calls' {
-            Mock New-ApiGetRequest {} -ModuleName KaceSMA
-            Mock New-ApiPostRequest {} -ModuleName KaceSMA
-            Mock New-ApiPutRequest {} -ModuleName KaceSMA
-            Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
+            Mock New-ApiGetRequest { } -ModuleName KaceSMA
+            Mock New-ApiPostRequest { } -ModuleName KaceSMA
+            Mock New-ApiPutRequest { } -ModuleName KaceSMA
+            Mock New-ApiDeleteRequest { } -ModuleName KaceSMA
 
-            $Server = 'https://foo'
+            It 'should call only New-ApiGETRequest' {
+                Get-SmaServiceDeskTicketTemplate -Id 1234 -QueryParameters "?paging=50"
 
-            $QueueIDParams = @{
-                QueueID = 1234
-            }
-
-
-            Get-SmaServiceDeskTicketTemplate @QueueIDParams
-
-            It 'should call New-ApiGETRequest' {
                 Assert-MockCalled -CommandName New-ApiGETRequest -ModuleName KaceSMA -Times 1
-            }
 
-            It 'should not call additional HTTP request methods' {
-                $Methods = @('POST','DELETE','PUT')
+                $Methods = @('POST', 'DELETE', 'PUT')
                 Foreach ($Method in $Methods) {
                     Assert-MockCalled -CommandName ("New-Api$Method" + "Request") -ModuleName KaceSMA -Times 0
                 }
             }
 
-            It "should call QueueID $($QueueIDParams.QueueID)/ticket_template endpoint" {
-                $WithQueueID = $(Get-SmaServiceDeskTicketTemplate @QueueIDParams -Verbose) 4>&1
-                $WithQueueID  | Should -Be 'Performing the operation "GET /api/service_desk/queues/1234/ticket_template" on target "https://foo".'
-            }
-
         }
 
-        Context 'Function Output' {
-            Mock New-ApiGetRequest {
-                $MockResponse = [pscustomobject]@{'Tickets'=@{}}
-                return $MockResponse
-            } -ModuleName KaceSMA
+        Context 'Parameter input' {
 
-            $QueueIDParams = @{
-                QueueID = 1234
+            Mock New-ApiGetRequest { } -ModuleName KaceSMA
+
+            It "Should take parameter from pipeline" {
+                { 1234 | Get-SmaServiceDeskTicketTemplate } | Should -Not -Throw
             }
 
-            It 'should produce [PSCustomObject] output' {
-               $output = Get-SmaServiceDeskTicketTemplate @QueueIDParams 
-               $output | Should -BeOfType System.Management.Automation.PSCustomObject
+            It "Should take parameter from position" {
+                { Get-SmaServiceDeskTicketTemplate -Id 1234 } | Should -Not -Throw
             }
         }
     }

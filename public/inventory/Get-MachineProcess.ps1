@@ -4,9 +4,14 @@ Function Get-MachineProcess {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Position = 0)]
-        [string]
-        $ProcessID,
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('ProcessId')]
+        [int]
+        $Id,
 
         [Parameter()]
         [ValidatePattern("^\?")]
@@ -14,23 +19,24 @@ Function Get-MachineProcess {
         $QueryParameters
     )
 
-    Begin {
-        $Endpoint = '/api/inventory/processes'
-        If ($ProcessID) {
-            $Endpoint = "/api/inventory/processes/{0}" -f $ProcessID
-        }
-    }
+    Begin { }
     Process {
+        $Endpoint = '/api/inventory/processes'
+        
+        If ($Id) {
+            $Endpoint = "/api/inventory/processes/{0}" -f $Id
+        }
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
         
     }
     End {
-
+        $Result.Processes
     }
 }

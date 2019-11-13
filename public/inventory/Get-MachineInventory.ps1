@@ -5,29 +5,37 @@ Function Get-MachineInventory {
     )]
     param(
 
-        [Parameter(Position = 0)]
-        [string]
-        $MachineID,
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+            )]
+        [Alias('MachineId')]
+        [int]
+        $Id,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
     )
-    Begin {
-        $Endpoint = '/api/inventory/machines'
-        If ($MachineID) {
-            $Endpoint = "/api/inventory/machines/{0}" -f $MachineID
-        }
-    }
+    Begin { }
     Process {
+        $Endpoint = '/api/inventory/machines'
+        
+        If ($Id) {
+            $Endpoint = "/api/inventory/machines/{0}" -f $Id
+        }
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Result.Machines
+    }
 }

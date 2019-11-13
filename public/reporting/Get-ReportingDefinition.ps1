@@ -2,46 +2,64 @@ Function Get-ReportingDefinition {
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low',
-        DefaultParameterSetName = "DefinitionID"
+        DefaultParameterSetName = "Id"
     )]
     param(
-        [Parameter(ParameterSetName = 'A',Position = 0)]
+        [Parameter(
+            Position = 0,
+            ParameterSetName = 'A',
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('DefinitionId')]
         [int]
-        $DefinitionID,
+        $Id,
 
-        [Parameter(ParameterSetName = 'B',Position = 0)]
+        [Parameter(
+            ParameterSetName = 'B',
+            Position = 0,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('DefinitionName')]
         [string]
-        $DefinitionName,
+        $Name,
 
-        [Parameter(ParameterSetName = 'C',Position = 0)]
+        [Parameter(
+            ParameterSetName = 'C',
+            Position = 0,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('DefinitionField')]
         [string]
-        $DistinctField,
+        $Field,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
     )
-    Begin {
-        $Endpoint = '/api/reporting/definitions'
-        If ($DefinitionID) {
-            $Endpoint = "/api/reporting/definitions/{0}" -f $DefinitionID
-        }
-        If ($DefinitionName) {
-            $Endpoint = "/api/reporting/definitions/{0}" -f $DefinitionName
-        }
-        If ($DistinctField) {
-            $Endpoint = "/api/reporting/definitions/{0}" -f $DistinctField
-        }
-    }
+    Begin { }
     Process {
+        $Endpoint = '/api/reporting/definitions'
+        If ($Id) {
+            $Endpoint = "/api/reporting/definitions/{0}" -f $Id
+        }
+        If ($Name) {
+            $Endpoint = "/api/reporting/definitions/{0}" -f $Name
+        }
+        If ($Field) {
+            $Endpoint = "/api/reporting/definitions/{0}" -f $Field
+        }
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Result.Definitions
+    }
 }

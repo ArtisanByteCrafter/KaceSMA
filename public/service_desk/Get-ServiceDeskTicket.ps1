@@ -4,30 +4,36 @@ Function Get-ServiceDeskTicket {
         ConfirmImpact = 'low'
     )]
     param(
-        [Parameter(Position = 0)]
+        [Parameter(
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('TicketId')]
         [int]
-        $TicketID,
+        $Id,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
     )
-    Begin {
-        $Endpoint = "/api/service_desk/tickets"
-        If ($TicketID) {
-            $Endpoint = "/api/service_desk/tickets/{0}" -f $TicketID
-        }
-        
-    }
+    Begin { }
     Process {
+        $Endpoint = "/api/service_desk/tickets"
+        If ($Id) {
+            $Endpoint = "/api/service_desk/tickets/{0}" -f $Id
+        }
+
         If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
             $newApiGETRequestSplat = @{
                 QueryParameters = $QueryParameters
                 Endpoint        = $Endpoint
             }
-            New-ApiGETRequest @newApiGETRequestSplat
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End { }
+    End {
+        $Result.Tickets
+    }
 }
