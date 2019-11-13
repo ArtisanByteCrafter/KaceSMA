@@ -72,18 +72,7 @@ Function Connect-Server {
         $script:CSRFToken = $Request.Headers.'x-dell-csrf-token'
         $script:Headers.Add("x-dell-csrf-token", "$script:CSRFToken")
 
-        # If we received a token, we're authenticated
-        If ($script:CSRFToken) {
-            [PSCustomObject]@{
-                Server   = $script:Server -replace 'https://', ''
-                Org      = $Org
-                Protocol = if ($Server -match "^(https)://") { 'HTTPS' }else { 'HTTP' }
-                User     = $Credential.username
-            }
-        }
-        Else {
-            Write-Error "A token from '$Server' could not be retrieved."
-        }
+
     }
     End {
         # Be nice and set session security protocols back to how we found them.
