@@ -1,47 +1,46 @@
 # KaceSMA
-|Build Status|Version|Downloads
-|---|---|---|
-|[![Build Status](https://artisanbytecrafter.visualstudio.com/KaceSMA/_apis/build/status/ArtisanByteCrafter.KaceSMA?branchName=WIP-v2.0)](https://artisanbytecrafter.visualstudio.com/KaceSMA/_build/latest?definitionId=3&branchName=WIP-v2.0)| [![](https://img.shields.io/powershellgallery/v/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)](https://www.powershellgallery.com/packages/KaceSMA)|![](https://img.shields.io/powershellgallery/dt/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)
+
+[![Build Status](https://artisanbytecrafter.visualstudio.com/KaceSMA/_apis/build/status/ArtisanByteCrafter.KaceSMA?branchName=WIP-v2.0)](https://artisanbytecrafter.visualstudio.com/KaceSMA/_build/latest?definitionId=3&branchName=WIP-v2.0) [![](https://img.shields.io/powershellgallery/v/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)](https://www.powershellgallery.com/packages/KaceSMA)
+ ![](https://img.shields.io/powershellgallery/dt/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)
 
 
 
-A module for interacting with a Quest Kace Systems Management Appliance via Powershell.
+A Powershell module for administering and interacting with a Quest Systems Management Appliance (SMA) via it's API interface.
 
-This module utilizes the Kace SMA API via Powershell and returns PS Objects that can be used in innumerable automation tasks.
 
-This module is [available on the Powershell Gallery](https://www.powershellgallery.com/packages/KaceSMA/)
 
-## To Install
-
-### from PowershellGallery (preferred)
-
-All Users:
+### To Install
 
 ````powershell
 Install-Module KaceSMA
 ````
 
-CurrentUser:
 
-````powershell
-Install-Module KaceSMA -Scope CurrentUser
-````
+### Quickstart
 
-### Alternately, clone from GitHub
+- Import the module
+- Authenticate to the appliance
+- Perform a request
 
 ```powershell
-git clone https://github.com/ArtisanByteCrafter/KaceSMA.git
-cd .\KaceSMA
-Import-Module KaceSma.psd1
+PS> Import-Module KaceSma
+PS> Connect-SmaServer -Server 'https://kace.example.com' -Org 'Default' -Credential (Get-Credential)
+PS> Get-SmaServiceDeskTicket -Id 1
+
+title       : I want to reset my password
+created     : 2019-06-13 09:01:13
+modified    : 2019-06-13 09:31:02
+id          : 1
+hd_queue_id : 10
+sla_dates   : {}
+
 ```
 
-## Wiki with examples
+## FAQ
 
-- [Home](https://github.com/ArtisanByteCrafter/KaceSMA/wiki)
-
-- [Frequently Asked Questions](https://github.com/ArtisanByteCrafter/KaceSMA/wiki/FAQ)
+[Visit the FAQ on the wiki](https://github.com/ArtisanByteCrafter/KaceSMA/wiki/FAQ)
 
 ## Questions or comments?
 
 ---
-Join the community channel (`#API`) [on Slack](https://kacecommunity.slack.com/)
+Join the community [Slack channel]((https://kacecommunity.slack.com/))  (`#Api`)
