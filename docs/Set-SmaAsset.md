@@ -12,7 +12,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Set-SmaAsset [-AssetID] <Int32> [-Body] <Hashtable> [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-SmaAsset -Id <Int32> [-Body] <Hashtable> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -37,21 +37,6 @@ PS> Set-SmaAsset -Body $SetAssetBody
 Updates the field 'field_10000' with string 'My String' on asset with ID 1234. Get asset field identities using Get-SmaAsset with query parameters `"?shaping=asset all"` on a similar asset if needed.
 
 ## PARAMETERS
-
-### -AssetID
-Specifies the asset ID to update.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -Body
 A hashtable-formatted payload containing the asset information.
@@ -97,6 +82,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Specifies the id of the item to query.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: AssetId
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 

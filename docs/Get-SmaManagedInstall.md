@@ -12,8 +12,8 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-SmaManagedInstall [[-ManagedInstallID] <Int32>] [-ListCompatibleMachines] [[-QueryParameters] <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-SmaManagedInstall [-Id <Int32>] [-ListCompatibleMachines] [[-QueryParameters] <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -74,21 +74,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ManagedInstallID
-Specifies the managed install to return from the SMA.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -QueryParameters
 Any additional query parameters to be included.
 String must begin with a '?' character.
@@ -118,6 +103,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Specifies the id of the item to query.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: ManagedInstallId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 

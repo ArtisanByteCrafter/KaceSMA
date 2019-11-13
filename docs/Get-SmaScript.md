@@ -12,7 +12,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-SmaScript [[-ScriptID] <Int32>] [[-QueryParameters] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-SmaScript [-Id <Int32>] [[-QueryParameters] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -67,21 +67,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ScriptID
-Specifies the script to return information about.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -WhatIf
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
@@ -95,6 +80,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Specifies the id of the item to query.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: ScriptId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 

@@ -12,7 +12,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-SmaScriptTask [-ScriptID] <Int32> [[-OrderID] <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-SmaScriptTask -Id <Int32> [-OrdinalID <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -51,37 +51,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrderID
-(Optional) The order (ordinal) ID of a specific task to be returned.
-The first task in a script is ordinal ID 0, and increments from there.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ScriptID
-The ID of the script who's tasks you'd like information about.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -WhatIf
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
@@ -95,6 +64,36 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Specifies the id of the item to query.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: ScriptId
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -OrdinalID
+{{ Fill OrdinalID Description }}
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: OrderId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 

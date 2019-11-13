@@ -12,8 +12,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-SmaAgentlessInventory [[-NodesID] <Int32>] [[-QueryParameters] <String>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Get-SmaAgentlessInventory [-Id <Int32>] [[-QueryParameters] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -52,21 +51,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -NodesID
-Specifies the node to return from the SMA.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -QueryParameters
 Any additional query parameters to be included.
 String must begin with a '?' character.
@@ -96,6 +80,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Specifies the id of the node to query.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: NodesId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 

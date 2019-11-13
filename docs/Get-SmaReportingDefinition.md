@@ -11,26 +11,25 @@ schema: 2.0.0
 
 ## SYNTAX
 
-### DefinitionID (Default)
+### Id (Default)
 ```
 Get-SmaReportingDefinition [-QueryParameters <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### A
 ```
-Get-SmaReportingDefinition [-DefinitionID <Int32>] [-QueryParameters <String>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Get-SmaReportingDefinition [-Id <Int32>] [-QueryParameters <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### B
 ```
-Get-SmaReportingDefinition [-DefinitionName <String>] [-QueryParameters <String>] [-WhatIf] [-Confirm]
+Get-SmaReportingDefinition [-Name <String>] [-QueryParameters <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ### C
 ```
-Get-SmaReportingDefinition [-DistinctField <String>] [-QueryParameters <String>] [-WhatIf] [-Confirm]
+Get-SmaReportingDefinition [-Field <String>] [-QueryParameters <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -71,51 +70,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -DefinitionID
-Specifies the definition ID to return.
-
-```yaml
-Type: Int32
-Parameter Sets: A
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DefinitionName
-Specifies the definition name to return.
-
-```yaml
-Type: String
-Parameter Sets: B
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DistinctField
-Specifies the distinct field to return.
-
-```yaml
-Type: String
-Parameter Sets: C
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -QueryParameters
 Any additional query parameters to be included.
 String must begin with a '?' character.
@@ -145,6 +99,51 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Field
+{{ Fill Field Description }}
+
+```yaml
+Type: String
+Parameter Sets: C
+Aliases: DefinitionField
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Id
+Specifies the id of the item to query.
+
+```yaml
+Type: Int32
+Parameter Sets: A
+Aliases: DefinitionId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -Name
+{{ Fill Name Description }}
+
+```yaml
+Type: String
+Parameter Sets: B
+Aliases: DefinitionName
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

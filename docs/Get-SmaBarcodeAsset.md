@@ -12,8 +12,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-SmaBarcodeAsset [[-BarcodeID] <Int32>] [[-QueryParameters] <String>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Get-SmaBarcodeAsset [-Id <Int32>] [[-QueryParameters] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -36,21 +35,6 @@ Get-SmaBarcodeAsset -BarcodeId 1
 Retrieves information a specific barcode within an org.
 
 ## PARAMETERS
-
-### -BarcodeID
-Specifies the barcode asset to return from the SMA.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -Confirm
 Prompts you for confirmation before running the cmdlet.
@@ -96,6 +80,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Specifies the id of the barcode asset to query.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: BarcodeId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 

@@ -12,7 +12,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-SmaOperatingSystemInventory [[-MachineID] <String>] [[-QueryParameters] <String>] [-WhatIf] [-Confirm]
+Get-SmaOperatingSystemInventory [-Id <Int32>] [[-QueryParameters] <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -52,21 +52,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -MachineID
-Specifies the machine to return operating system information about.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -QueryParameters
 Any additional query parameters to be included.
 String must begin with a '?' character.
@@ -96,6 +81,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Specifies the id of the item to query.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: MachineId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 

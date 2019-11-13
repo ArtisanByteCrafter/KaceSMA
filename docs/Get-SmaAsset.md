@@ -12,7 +12,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-SmaAsset [[-AssetID] <Int32>] [-AsBarcodes] [[-QueryParameters] <String>] [-WhatIf] [-Confirm]
+Get-SmaAsset [-Id <Int32>] [-AsBarcodes] [[-QueryParameters] <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -55,21 +55,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -AssetID
-Specifies the asset to return from the SMA.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -118,6 +103,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Specifies the id of the asset to query.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: AssetId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
