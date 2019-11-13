@@ -4,23 +4,28 @@ Function New-ServiceDeskTicket {
         ConfirmImpact = 'low'
     )]
     param(
-
-        [Parameter(Mandatory)]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline
+        )]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
     )
-    Begin {
-        $Endpoint = '/api/service_desk/tickets'
-    }
+    Begin { }
     Process {
+        $Endpoint = '/api/service_desk/tickets'
+
         If ($PSCmdlet.ShouldProcess($Server, "POST $Endpoint")) {
             $newApiPOSTRequestSplat = @{
                 Body     = $Body
                 Endpoint = $Endpoint
             }
-            New-ApiPOSTRequest @newApiPOSTRequestSplat
+            $Result = New-ApiPOSTRequest @newApiPOSTRequestSplat
         }
     }
-    End { }
+    End {
+        $Result
+    }
 }

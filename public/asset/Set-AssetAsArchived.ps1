@@ -5,26 +5,34 @@ Function Set-AssetAsArchived {
     )]
     param(
 
-        [Parameter(Mandatory,Position = 0)]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('AssetId')]
         [int]
-        $AssetID,
+        $Id,
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
     )
-    Begin {
-        $Endpoint = "/api/asset/assets/{0}/archive" -f $AssetID
-    }
+    Begin { }
     Process {
+        $Endpoint = "/api/asset/assets/{0}/archive" -f $Id
+
         If ($PSCmdlet.ShouldProcess($Server, "POST $Endpoint")) {
             $newApiPOSTRequestSplat = @{
                 Body     = $Body
                 Endpoint = $Endpoint
             }
-            New-ApiPOSTRequest @newApiPOSTRequestSplat
+            $Result = New-ApiPOSTRequest @newApiPOSTRequestSplat
         }
     }
-    End { }
+    End {
+        $Result
+    }
 }

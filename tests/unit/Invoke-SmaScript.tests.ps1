@@ -7,7 +7,7 @@ Describe 'Invoke-SmaScript Unit Tests' -Tags 'Unit' {
             Mock New-ApiDeleteRequest { } -ModuleName KaceSMA
 
             It 'should call only New-ApiPOSTRequest' {
-                Invoke-SmaScript -Id 1234
+                Invoke-SmaScript -Id 1234 -TargetMachineID 1, 2
 
                 Assert-MockCalled -CommandName New-ApiPOSTRequest -ModuleName KaceSMA -Times 1
 

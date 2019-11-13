@@ -7,7 +7,7 @@ Describe 'Get-SmaScriptRunStatus Unit Tests' -Tags 'Unit' {
             Mock New-ApiDeleteRequest { } -ModuleName KaceSMA
 
             It 'should call only New-ApiGETRequest' {
-                Get-SmaScriptRunStatus -Id 1234 -QueryParameters "?paging=50"
+                Get-SmaScriptRunStatus -Id 1234
 
                 Assert-MockCalled -CommandName New-ApiGETRequest -ModuleName KaceSMA -Times 1
 

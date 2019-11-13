@@ -1,44 +1,36 @@
 Describe 'New-SmaServiceDeskTicket Unit Tests' -Tags 'Unit' {
     InModuleScope KaceSMA {
         Context 'Backend Calls' {
-            Mock New-ApiGetRequest {} -ModuleName KaceSMA
-            Mock New-ApiPostRequest {} -ModuleName KaceSMA
-            Mock New-ApiPutRequest {} -ModuleName KaceSMA
-            Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
+            Mock New-ApiGetRequest { } -ModuleName KaceSMA
+            Mock New-ApiPostRequest { } -ModuleName KaceSMA
+            Mock New-ApiPutRequest { } -ModuleName KaceSMA
+            Mock New-ApiDeleteRequest { } -ModuleName KaceSMA
 
-            $Server = 'https://foo'
             
-            $Body = @{
-                'Tickets' =@(
-                    @{
-                    'title'='test-ticket'
-                    'hd_queue_id'= 1
-                    'submitter' = 1234
-                    "custom_1" = 'custom field 1 text'
-                    }
-                )
-            }
 
-            $NewTicketParams = @{
-                Body = $Body
-            }
+            It 'should call only New-ApiPOSTRequest' {
 
-            New-SmaServiceDeskTicket @NewTicketParams
+                New-SmaServiceDeskTicket -Body @{'foo' = 'foo' }
 
-            It 'should call New-ApiPOSTRequest' {
-                Assert-MockCalled -CommandName New-ApiPOSTRequest -ModuleName KaceSMA -Times 1
-            }
+                Assert-MockCalled -CommandName New-ApiPostRequest -ModuleName KaceSMA -Times 1
 
-            It 'should not call additional HTTP request methods' {
-                $Methods = @('GET','DELETE','PUT')
+                $Methods = @('GET', 'DELETE', 'PUT')
                 Foreach ($Method in $Methods) {
                     Assert-MockCalled -CommandName ("New-Api$Method" + "Request") -ModuleName KaceSMA -Times 0
                 }
             }
+        }
 
-            It "should call '/api/service_desk/tickets' endpoint" {
-                $WithBody = $(New-SmaServiceDeskTicket @NewTicketParams -Verbose) 4>&1
-                $WithBody  | Should -Be 'Performing the operation "POST /api/service_desk/tickets" on target "https://foo".'
+        Context 'Parameter input' {
+
+            Mock New-ApiPOSTRequest { } -ModuleName KaceSMA
+
+            It "Should take parameter from pipeline" {
+                { @{'foo' = 'foo' } | New-SmaServiceDeskTicket } | Should -Not -Throw
+            }
+
+            It "Should take parameter from position" {
+                { New-SmaServiceDeskTicket -Body @{'foo' = 'foo' } } | Should -Not -Throw
             }
         }
     }

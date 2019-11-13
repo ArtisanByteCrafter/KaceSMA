@@ -4,9 +4,15 @@ Function New-ScriptTask {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory,Position = 0)]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('ScriptId')]
         [int]
-        $ScriptID,
+        $Id,
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
@@ -15,16 +21,20 @@ Function New-ScriptTask {
 
     )
     Begin {
-        $Endpoint = "/api/script/{0}/task" -f $ScriptID
+        
     }
     Process {
+        $Endpoint = "/api/script/{0}/task" -f $Id
+
         If ($PSCmdlet.ShouldProcess($Server, "POST $Endpoint")) {
             $newApiPOSTRequestSplat = @{
                 Body     = $Body
                 Endpoint = $Endpoint
             }
-            New-ApiPOSTRequest  @newApiPOSTRequestSplat
+            $Result = New-ApiPOSTRequest  @newApiPOSTRequestSplat
         }
     }
-    End { }
+    End {
+        $Result
+    }
 }

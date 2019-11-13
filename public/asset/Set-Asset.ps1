@@ -5,27 +5,35 @@ Function Set-Asset {
     )]
     param(
 
-        [Parameter(Mandatory,Position = 0)]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('AssetId')]
         [int]
-        $AssetID,
+        $Id,
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
     )
-    Begin {
-        $Endpoint = "/api/asset/assets/{0}" -f $AssetID
-    }
+    Begin { }
     Process {
+        $Endpoint = "/api/asset/assets/{0}" -f $Id
+
         If ($PSCmdlet.ShouldProcess($Server, "PUT $Endpoint")) {
 
-            $InvokeParams = @{             
-                Endpoint   = $Endpoint
-                Body       = $Body
+            $InvokeParams = @{
+                Endpoint = $Endpoint
+                Body     = $Body
             }
-            New-ApiPUTRequest @InvokeParams
+            $Result = New-ApiPUTRequest @InvokeParams
         }
     }
-    End { }
+    End {
+        $Result
+    }
 }

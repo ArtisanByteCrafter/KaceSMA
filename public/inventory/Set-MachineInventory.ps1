@@ -4,29 +4,36 @@ Function Set-MachineInventory {
         ConfirmImpact = 'medium'
     )]
     param(
-        [Parameter(Mandatory, Position = 0)]
-        [string]
-        $MachineID,
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('MachineId')]
+        [int]
+        $Id,
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [hashtable]
         $Body
     )
-    Begin {
-        $Endpoint = "/api/inventory/machines/{0}" -f $MachineID
-    }
+    Begin { }
     Process {
+        $Endpoint = "/api/inventory/machines/{0}" -f $Id
+
         If ($PSCmdlet.ShouldProcess($Server, "PUT $Endpoint")) {
-            Write-Warning "This cmdlet invokes a client-side inventory check.
-            See: https://github.com/ArtisanByteCrafter/KaceSMA/wiki/FAQ#q-set-smamachineinventory-triggers-a-client-side-inventory"
+            Write-Warning "This cmdlet invokes a client-side inventory check-in to the appliance."
 
             $newApiPUTRequestSplat = @{
                 Body     = $Body
                 Endpoint = $Endpoint
             }
-            New-ApiPUTRequest @newApiPUTRequestSplat
+            $Result = New-ApiPUTRequest @newApiPUTRequestSplat
         }
     }
-    End { }
+    End {
+        $Result
+    }
 }

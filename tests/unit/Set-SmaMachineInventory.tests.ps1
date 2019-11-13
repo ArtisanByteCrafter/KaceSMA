@@ -1,43 +1,34 @@
 Describe 'Set-SmaMachineInventory Unit Tests' -Tags 'Unit' {
     InModuleScope KaceSMA {
         Context 'Backend Calls' {
-            Mock New-ApiGetRequest {} -ModuleName KaceSMA
-            Mock New-ApiPostRequest {} -ModuleName KaceSMA
-            Mock New-ApiPutRequest {} -ModuleName KaceSMA
-            Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
-
-            $Server = 'https://foo'
+            Mock New-ApiGetRequest { } -ModuleName KaceSMA
+            Mock New-ApiPostRequest { } -ModuleName KaceSMA
+            Mock New-ApiPutRequest { } -ModuleName KaceSMA
+            Mock New-ApiDeleteRequest { } -ModuleName KaceSMA
             
-            $Body = @{
-                'Machines' = @(
-                    @{
-                        'id' = 1234
-                        'notes' = ((Get-Date).tostring())
-                    }
-                )
-            }
-            
-            $MachineSplat = @{
-                MachineId = 1234
-                Body = $Body
-            }
-            Set-SmaMachineInventory @MachineSplat
+            It 'should call only New-ApiPUTRequest' {
 
-            It 'should call New-ApiPUTRequest' {
-                Assert-MockCalled -CommandName New-ApiPUTRequest -ModuleName KaceSMA -Times 1
-            }
+                Set-SmaMachineInventory -Id 1234 -Body @{'foo' = 'foo' }
 
-            It 'should not call additional HTTP request methods' {
-                $Methods = @('GET','DELETE','POST')
+                Assert-MockCalled -CommandName New-ApiPutRequest -ModuleName KaceSMA -Times 1
+
+                $Methods = @('GET', 'DELETE', 'POST')
                 Foreach ($Method in $Methods) {
                     Assert-MockCalled -CommandName ("New-Api$Method" + "Request") -ModuleName KaceSMA -Times 0
                 }
             }
+        }
+        Context 'Parameter input' {
 
-            It "should call '/api/inventory/machines/1234' endpoint" {
-                $WithBody = $(Set-SmaMachineInventory @MachineSplat -Verbose) 4>&1
-                $WithBody  | Should -Be 'Performing the operation "PUT /api/inventory/machines/1234" on target "https://foo".'
+            Mock New-ApiPUTRequest { } -ModuleName KaceSMA
+
+            It "Should take parameter from pipeline" {
+                { 1234 | Set-SmaMachineInventory -Body @{'foo' = 'foo' } } | Should -Not -Throw
+            }
+
+            It "Should take parameter from position" {
+                { Set-SmaMachineInventory -Id 1234 -Body @{'foo' = 'foo' } } | Should -Not -Throw
             }
         }
     }
-} 
+}

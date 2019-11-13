@@ -7,7 +7,7 @@ Describe 'Get-SmaScriptDependency Unit Tests' -Tags 'Unit' {
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
             It 'should call only New-ApiGETRequest' {
-                Get-SmaScriptDependency -Id 1234 -QueryParameters "?paging=50"
+                Get-SmaScriptDependency -Id 1234
 
                 Assert-MockCalled -CommandName New-ApiGETRequest -ModuleName KaceSMA -Times 1
 

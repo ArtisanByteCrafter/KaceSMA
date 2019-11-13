@@ -6,7 +6,7 @@ Describe 'Get-SmaBarcodeAsset Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            Get-SmaBarcodeAsset -QueryParameters = "?paging=50"
+            Get-SmaBarcodeAsset -QueryParameters "?paging=50"
 
             It 'should call only New-ApiGETRequest' {
                 Get-SmaAsset -Id 1234 -QueryParameters "?paging=50"

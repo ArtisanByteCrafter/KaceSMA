@@ -23,10 +23,8 @@ Archives an existing SMA asset.
 ### EXAMPLE 1
 ```powershell
 PS> $Body = @{
-    @{
         archiveReason = "Testing Archival via API"
     }
-}
 
 PS> Set-SmaAssetAsArchived -AssetID 1234 -Body $Body
 ```

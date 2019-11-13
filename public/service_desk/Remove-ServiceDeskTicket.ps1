@@ -4,18 +4,26 @@ Function Remove-ServiceDeskTicket {
         ConfirmImpact = 'high'
     )]
     param(
-        [Parameter(Mandatory, Position = 0)]
-        [string]
-        $TicketID
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('TicketId')]
+        [int]
+        $Id
 
     )
-    Begin {
-        $Endpoint = "/api/service_desk/tickets/{0}" -f $TicketID
-    }
+    Begin { }
     Process {
+        $Endpoint = "/api/service_desk/tickets/{0}" -f $Id
+
         If ($PSCmdlet.ShouldProcess($Server, "DELETE $Endpoint")) {
-            New-ApiDELETERequest -Endpoint $Endpoint
+            $Result = New-ApiDELETERequest -Endpoint $Endpoint
         }
     }
-    End { }
+    End {
+        $Result
+    }
 }
