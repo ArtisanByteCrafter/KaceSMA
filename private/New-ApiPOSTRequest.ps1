@@ -1,25 +1,8 @@
 Function New-ApiPOSTRequest {
     param (
         [Parameter(Mandatory)]
-        [ValidateScript({
-            If ($_ -notmatch "^(http|https)://") {
-                Throw 'Must start with "http://" or "https://"'
-        } Else{ $true }}
-        )]
-        [String]
-        $Server,
-
-        [Parameter(Mandatory)]
-        [String]
-        $Org,
-
-        [Parameter(Mandatory)]
         [String]
         $Endpoint,
-
-        [Parameter(Mandatory)]
-        [PSCredential]
-        $Credential,
 
         [Parameter()]
         $Body,
@@ -29,50 +12,19 @@ Function New-ApiPOSTRequest {
         $QueryParameters
     )
 
-    $Auth = @{
-        'password'         = ($Credential.GetNetworkCredential().password)
-        'userName'         = ($Credential.username)
-        'organizationName' = $Org
-    } | ConvertTo-Json
-
-
-    # Dynamically find and include all available protocols 'Tls12' or higher.
-    # Module requires PS 5.1+ so no error checking should be required.
-
     $CurrentVersionTls = [Net.ServicePointManager]::SecurityProtocol
     Set-ClientTlsProtocols -ErrorAction Stop
 
-    $Uri = "$Server/ams/shared/api/security/login"
-    $session = new-object microsoft.powershell.commands.webrequestsession
-
-    $Headers = @{}
-    $headers.Add('Accept', 'application/json')
-    $headers.Add('Content-Type', 'application/json')
-    $headers.Add('x-dell-api-version', '8')
-
-    $RequestSplat = @{
-        Uri             = $Uri
-        Headers         = $Headers
-        Body            = $Auth
-        Method          = 'POST'
-        WebSession      = $Session
-        UseBasicParsing = $True
-    }
-    $Request = Invoke-WebRequest @RequestSplat
-
-    $CSRFToken = $Request.Headers.'x-dell-csrf-token'
-    $Headers.Add("x-dell-csrf-token", "$CSRFToken")
-
     If ($QueryParameters) {
-        $APIUrl = "{0}{1}{2}" -f $Server,$Endpoint,$QueryParameters
+        $APIUrl = "{0}{1}{2}" -f $Server, $Endpoint, $QueryParameters
     }
-    Else { $APIUrl = "{0}{1}" -f $Server,$Endpoint }
+    Else { $APIUrl = "{0}{1}" -f $Server, $Endpoint }
 
     $IRMSplat = @{
-        Uri = $APIUrl
-        Headers = $Headers
-        Method = 'POST'
-        WebSession = $session
+        Uri             = $APIUrl
+        Headers         = $script:Headers
+        Method          = 'POST'
+        WebSession      = $script:Session
         UseBasicParsing = $true
     }
 

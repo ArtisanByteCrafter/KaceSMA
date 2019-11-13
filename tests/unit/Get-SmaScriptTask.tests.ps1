@@ -1,8 +1,3 @@
-$root = Split-Path (Split-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) -Parent) -Parent
-
-Get-Module KaceSMA | Remove-Module -Force
-Import-Module $root\KaceSMA.psd1
-
 Describe 'Get-SmaScriptTask Unit Tests' -Tags 'Unit' {
     InModuleScope KaceSMA {
         Context 'Backend Calls' {
@@ -11,44 +6,15 @@ Describe 'Get-SmaScriptTask Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            It 'should call only New-ApiGETRequest' {
+                Get-SmaScriptTask -Id 1234
 
-            $ScriptIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-                ScriptID = 1234
-            }
-
-            $OrderIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-                ScriptID = 1234
-                OrderID = 1
-            }
-
-            Get-SmaScriptTask @ScriptIDParams
-
-            It 'should call New-ApiGETRequest' {
                 Assert-MockCalled -CommandName New-ApiGETRequest -ModuleName KaceSMA -Times 1
-            }
 
-            It 'should not call additional HTTP request methods' {
-                $Methods = @('POST','DELETE','PUT')
+                $Methods = @('POST', 'DELETE', 'PUT')
                 Foreach ($Method in $Methods) {
                     Assert-MockCalled -CommandName ("New-Api$Method" + "Request") -ModuleName KaceSMA -Times 0
                 }
-            }
-
-            It "should call ScriptId endpoint if OrderID is not specified" {
-                $WithScriptId = $(Get-SmaScriptTask @ScriptIDParams -Verbose) 4>&1
-                $WithScriptId  | Should -Be 'Performing the operation "GET /api/script/1234/tasks" on target "https://foo".'
-            }
-
-            It "should call OrderId endpoint if OrderId is specified" {
-                $WithOrderID = $(Get-SmaScriptTask @OrderIDParams -Verbose) 4>&1
-                $WithOrderID  | Should -Be 'Performing the operation "GET /api/script/1234/task/1" on target "https://foo".'
             }
         }
 
@@ -58,12 +24,7 @@ Describe 'Get-SmaScriptTask Unit Tests' -Tags 'Unit' {
                 return $MockResponse
             } -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
-
             $ScriptIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
                 ScriptID = 1234
             }
 

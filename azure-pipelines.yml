@@ -1,0 +1,24 @@
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: PowerShell@2
+  displayName: 'Pester Tests - Windows Powershell'
+  inputs:
+    filePath: '.\Build\build.ps1'
+    failOnStderr: true
+
+- task: PowerShell@2
+  displayName: 'Pester Tests - Powershell Core'
+  inputs:
+    filePath: './Build/build.ps1'
+    failOnStderr: true
+    pwsh: true
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**/*.TestResults.xml'
+    mergeTestResults: true
+    failTaskOnFailedTests: true
+    testRunTitle: 'Test Run'

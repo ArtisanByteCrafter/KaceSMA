@@ -1,96 +1,65 @@
 Function Get-ReportingDefinition {
-    <#
-      .DESCRIPTION
-        //todo
-
-    .PARAMETER Server
-        The fully qualified name (FQDN) of the SMA Appliance.
-        Example: https://kace.example.com
-
-    .PARAMETER Org
-        The SMA Organization you want to retrieve information from. If not provided, 'Default' is used.
-    
-    .PARAMETER Credential
-        A credential for the kace appliance that has permissions to interact with the API.
-        To run interactively, use -Credential (Get-Credential)
-
-    .PARAMETER DefinitionID
-        //todo
-    .PARAMETER DefinitionName
-        //todo
-    .PARAMETER DistinctField
-       //todo
-
-    .PARAMETER QueryParameters
-        (Optional) Any additional query parameters to be included. String must begin with a <?> character.
-
-    .INPUTS
-
-    .OUTPUTS
-        PSCustomObject
-
-    .EXAMPLE
-        This will return the reporting definitions for report ID 1234 in ORG 1.
-
-        Get-SmaReportingDefinition -Server https://kace.example.com -Credential (Get-Credential) -DefinitionID 1234 -QueryParameters "?orgID=1"
-        
-    .EXAMPLE
-        //todo
-
-    .NOTES
-       
-    #>
     [cmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'low',
-        DefaultParameterSetName = "DefinitionID"
+        DefaultParameterSetName = "Id"
     )]
     param(
-        [Parameter(Mandatory = $true)]
-        [string]
-        $Server,
-
-        [Parameter()]
-        [string]
-        $Org = 'Default',
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $Credential,
-
-        [Parameter(ParameterSetName='A')]
+        [Parameter(
+            Position = 0,
+            ParameterSetName = 'A',
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('DefinitionId')]
         [int]
-        $DefinitionID,
+        $Id,
 
-        [Parameter(ParameterSetName='B')]
+        [Parameter(
+            ParameterSetName = 'B',
+            Position = 0,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('DefinitionName')]
         [string]
-        $DefinitionName,
+        $Name,
 
-        [Parameter(ParameterSetName='C')]
+        [Parameter(
+            ParameterSetName = 'C',
+            Position = 0,
+            ValueFromPipelineByPropertyName
+        )]
+        [Alias('DefinitionField')]
         [string]
-        $DistinctField,
+        $Field,
 
         [Parameter()]
         [ValidatePattern("^\?")]
         [string]
         $QueryParameters
     )
-    Begin {
-        $Endpoint = '/api/reporting/definitions'
-        If ($DefinitionID) {
-            $Endpoint = "/api/reporting/definitions/$DefinitionID"
-        }
-        If ($DefinitionName) {
-            $Endpoint = "/api/reporting/definitions/$DefinitionName"
-        }
-        If ($DistinctField) {
-            $Endpoint = "/api/reporting/definitions/$DistinctField"
-        }
-    }
+    Begin { }
     Process {
-        If ($PSCmdlet.ShouldProcess($Server,"GET $Endpoint")) {
-            New-ApiGETRequest -Server $Server -Endpoint $Endpoint -Org $Org -QueryParameters $QueryParameters -Credential $Credential
+        $Endpoint = '/api/reporting/definitions'
+        If ($Id) {
+            $Endpoint = "/api/reporting/definitions/{0}" -f $Id
+        }
+        If ($Name) {
+            $Endpoint = "/api/reporting/definitions/{0}" -f $Name
+        }
+        If ($Field) {
+            $Endpoint = "/api/reporting/definitions/{0}" -f $Field
+        }
+
+        If ($PSCmdlet.ShouldProcess($Server, "GET $Endpoint")) {
+            $newApiGETRequestSplat = @{
+                QueryParameters = $QueryParameters
+                Endpoint        = $Endpoint
+            }
+            $Result = New-ApiGETRequest @newApiGETRequestSplat
         }
     }
-    End {}
+    End {
+        $Result.Definitions
+    }
 }

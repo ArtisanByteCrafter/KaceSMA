@@ -1,83 +1,38 @@
-$root = Split-Path (Split-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) -Parent) -Parent
-
-Get-Module KaceSMA | Remove-Module -Force
-Import-Module $root\KaceSMA.psd1
-
 Describe 'New-SmaAsset Unit Tests' -Tags 'Unit' {
     InModuleScope KaceSMA {
         Context 'Backend Calls' {
-            Mock New-ApiGetRequest {} -ModuleName KaceSMA
-            Mock New-ApiPostRequest {} -ModuleName KaceSMA
-            Mock New-ApiPutRequest {} -ModuleName KaceSMA
-            Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
+            Mock New-ApiGetRequest { } -ModuleName KaceSMA
+            Mock New-ApiPostRequest { } -ModuleName KaceSMA
+            Mock New-ApiPutRequest { } -ModuleName KaceSMA
+            Mock New-ApiDeleteRequest { } -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            
 
-            $NewAgentAsset = @{
-                'Assets' =@(
-                    @{
-                    'name'='testAsset'
-                    "asset_type_id" = 5
-                    'location_id' = 7080
-                    'asset_type_name' = "Computer with Dell Agent"
-                    }
-                )
-            }
+            It 'should call only New-ApiPOSTRequest' {
+                $NewAgentAsset = @{'foo' = 'foo' }
+                New-SmaAsset -Body $NewAgentAsset
 
-            $BodyParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-                Body = $NewAgentAsset
-            }
+                Assert-MockCalled -CommandName New-ApiPostRequest -ModuleName KaceSMA -Times 1
 
-            New-SmaAsset @BodyParams
-
-            It 'should call New-ApiPOSTRequest' {
-                Assert-MockCalled -CommandName New-ApiPOSTRequest -ModuleName KaceSMA -Times 1
-            }
-
-            It 'should not call additional HTTP request methods' {
-                $Methods = @('GET','DELETE','PUT')
+                $Methods = @('GET', 'DELETE', 'PUT')
                 Foreach ($Method in $Methods) {
                     Assert-MockCalled -CommandName ("New-Api$Method" + "Request") -ModuleName KaceSMA -Times 0
                 }
             }
-
-            It "should call '/api/asset/assets' endpoint" {
-                $WithBody = $(New-SmaAsset @BodyParams -Verbose) 4>&1
-                $WithBody  | Should -Be 'Performing the operation "POST /api/asset/assets" on target "https://foo".'
-            }
         }
 
-        Context 'Function Output' {
-            Mock New-ApiPostRequest {
-                $MockResponse = [PSCustomObject]@{'Result'='Success'}
-                return $MockResponse
-            } -ModuleName KaceSMA
+        Context 'Parameter input' {
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            Mock New-ApiPOSTRequest { } -ModuleName KaceSMA
 
-            $NewAgentAsset = @{
-                'Assets' =@(
-                    @{
-                    'name'='testAssetFoo'
-                    "asset_type_id" = 5
-                    'location_id' = 7080
-                    'asset_type_name' = "Computer with Dell Agent"
-                    }
-                )
-            }
-            $BodyParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-                Body = $NewAgentAsset
+            $NewAgentAsset = @{'foo' = 'foo' }
+
+            It "Should take parameter from pipeline" {
+                { $NewAgentAsset | New-SmaAsset } | Should -Not -Throw
             }
 
-            It 'should produce PSCustomObject output' {
-               $output = New-SmaAsset @BodyParams 
-               $output | Should -BeOfType System.Management.Automation.PSCustomObject
+            It "Should take parameter from position" {
+                { New-SmaAsset -Body $NewAgentAsset } | Should -Not -Throw
             }
         }
     }

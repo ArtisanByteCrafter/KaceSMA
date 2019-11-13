@@ -1,8 +1,3 @@
-$root = Split-Path (Split-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) -Parent) -Parent
-
-Get-Module KaceSMA | Remove-Module -Force
-Import-Module $root\KaceSMA.psd1
-
 Describe 'Get-SmaBarcodeAsset Unit Tests' -Tags 'Unit' {
     InModuleScope KaceSMA {
         Context 'Backend Calls' {
@@ -11,67 +6,31 @@ Describe 'Get-SmaBarcodeAsset Unit Tests' -Tags 'Unit' {
             Mock New-ApiPutRequest {} -ModuleName KaceSMA
             Mock New-ApiDeleteRequest {} -ModuleName KaceSMA
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            Get-SmaBarcodeAsset -QueryParameters "?paging=50"
 
-            $GenericParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-                QueryParameters = "?paging=50"
-            }
+            It 'should call only New-ApiGETRequest' {
+                Get-SmaAsset -Id 1234 -QueryParameters "?paging=50"
 
-            $BarcodeIDParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-                BarcodeID = 1234
-                QueryParameters = "?paging=50"
-            }
-
-            Get-SmaBarcodeAsset @GenericParams
-
-            It 'should call New-ApiGETRequest' {
                 Assert-MockCalled -CommandName New-ApiGETRequest -ModuleName KaceSMA -Times 1
-            }
 
-            It "should call generic endpoint" {
-                $Generic = $(Get-SmaBarcodeAsset @GenericParams -Verbose) 4>&1
-                $Generic  | Should -Be 'Performing the operation "GET /api/asset/barcodes" on target "https://foo".'
-            }
-
-            It "should call BarcodeID endpoint if BarcodeID parameter is specified" {
-                $WithBarcodeID = $(Get-SmaBarcodeAsset @BarcodeIDParams -Verbose) 4>&1
-                $WithBarcodeID  | Should -Be 'Performing the operation "GET /api/asset/barcodes/1234" on target "https://foo".'
-            }
-
-            It 'should not call additional HTTP request methods' {
-                $Methods = @('POST','DELETE','PUT')
+                $Methods = @('POST', 'DELETE', 'PUT')
                 Foreach ($Method in $Methods) {
                     Assert-MockCalled -CommandName ("New-Api$Method" + "Request") -ModuleName KaceSMA -Times 0
                 }
             }
         }
 
-        Context 'Function Output' {
-            Mock New-ApiGetRequest {
-                $MockResponse = [pscustomobject]@{'Count'=1;'Warnings'=@{};'Barcodes'=@{}}
-                return $MockResponse
-            } -ModuleName KaceSMA
+        Context 'Parameter input' {
 
-            $MockCred = New-Object System.Management.Automation.PSCredential ('fooUser', (ConvertTo-SecureString 'bar' -AsPlainText -Force))
+            # Mock a return object from the SMA with a single property, Id
+            Mock New-ApiGetRequest { } -ModuleName KaceSMA
 
-            $GenericParams = @{
-                Server = 'https://foo'
-                Credential = $MockCred
-                Org = 'Default'
-                QueryParameters = "?paging=50"
+            It "Should take parameter from pipeline" {
+                {1234 | Get-SmaBarcodeAsset} | Should -Not -Throw
             }
 
-            It 'should produce [PSCustomObject] output' {
-
-               $output = Get-SmaBarcodeAsset @GenericParams 
-               $output | Should -Be "@{Count=1; Warnings=System.Collections.Hashtable; Barcodes=System.Collections.Hashtable}"
-               $output | Should -BeOfType System.Management.Automation.PSCustomObject
+            It "Should take parameter from position" {
+                {Get-SmaBarcodeAsset -Id 1234} | Should -Not -Throw
             }
         }
     }
