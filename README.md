@@ -1,6 +1,6 @@
 # KaceSMA
 
-[![Build Status](https://artisanbytecrafter.visualstudio.com/KaceSMA/_apis/build/status/ArtisanByteCrafter.KaceSMA?branchName=WIP-v2.0)](https://artisanbytecrafter.visualstudio.com/KaceSMA/_build/latest?definitionId=3&branchName=WIP-v2.0) [![](https://img.shields.io/powershellgallery/v/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)](https://www.powershellgallery.com/packages/KaceSMA)
+[![Build Status](https://artisanbytecrafter.visualstudio.com/KaceSMA/_apis/build/status/ArtisanByteCrafter.KaceSMA?branchName=master)](https://artisanbytecrafter.visualstudio.com/KaceSMA/_build/latest?definitionId=3&branchName=master) [![](https://img.shields.io/powershellgallery/v/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)](https://www.powershellgallery.com/packages/KaceSMA)
  ![](https://img.shields.io/powershellgallery/dt/KaceSMA.svg?logo=powershell&colorA=1C8FDB&logoColor=ffffff&colorB=145C8B)
 
 
