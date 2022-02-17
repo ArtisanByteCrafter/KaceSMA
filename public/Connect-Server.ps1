@@ -43,6 +43,7 @@ Function Connect-Server {
         $script:Headers = @{ }
         $script:Headers.Add('Accept', 'application/json')
         $script:Headers.Add('Content-Type', 'application/json')
+        $script:Headers.Add('x-dell-api-version', '8')
         $script:Headers.Add('x-kace-api-version', '8')
 
         $RequestSplat = @{
@@ -69,7 +70,8 @@ Function Connect-Server {
             break;
         }
         
-        $script:CSRFToken = $Request.Headers.'x-kace-csrf-token'
+        $script:CSRFToken = $Request.Headers.'x-dell-csrf-token'
+        $script:Headers.Add("x-dell-csrf-token", "$script:CSRFToken")
         $script:Headers.Add("x-kace-csrf-token", "$script:CSRFToken")
 
 
